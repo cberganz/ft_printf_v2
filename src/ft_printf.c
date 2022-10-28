@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/27 05:56:19 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/28 15:54:17 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,31 @@
 Printer	*printer_singleton(void);
 # define this printer_singleton()
 
-int		ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-void	construct() __attribute__((constructor));
-void	destruct() __attribute__((destructor));
+static void constructor() __attribute__((constructor));
+int	ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+
+static const t_handler	g_format_string_handler[3] =
+{
+	&bufferize_increment,
+	&bufferize_arg
+};
 
 int	ft_printf(const char *s, ...)
 {
-	va_list	args;
-
-	va_start(args, s);
+	va_start(this->args, s);
+	this->format = &s;
 	while (*s)
-	{
-		if (*s == '%')
-			this->bufferize_arg(args, &s);
-		else
-			this->bufferize_char(*(s++));
-	}
-	va_end(args);
+		g_format_string_handler[*s == '%']();
+	va_end(this->args);
 	return (this->len);
 }
 
-void	construct(void)
+static void constructor(void)
 {
+	//memset(this, 0, sizeof(*this));
+	//if (setvbuf(stdout, this->buffer, _IOLBF, BUFFER_SIZE) != 0)
+	//	exit(1);
 	this->flags = flags_construct();
-	memset(this->buffer, 0, BUFFER_SIZE);
 	this->offset = 0;
 	this->len = 0;
 	this->flush = &flush;
@@ -52,13 +53,8 @@ void	construct(void)
 	this->handle_hexadecimal_lower = &handle_hexadecimal_lower;
 	this->handle_hexadecimal_upper = &handle_hexadecimal_upper;
 	this->bufferize_char = &bufferize_char;
+	this->bufferize_increment = &bufferize_increment;
 	this->bufferize_string = &bufferize_string;
 	this->bufferize_arg = &bufferize_arg;
 	this->bufferize_integer = &bufferize_integer;
-}
-
-void destruct()
-{
-	this->flush();
-	//memset(this, 0, BUFFER_SIZE);
 }

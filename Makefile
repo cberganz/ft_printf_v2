@@ -6,19 +6,19 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/10/27 06:05:08 by charles          ###   ########.fr        #
+#    Updated: 2022/10/28 03:44:30 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= test
 
-LIB_NAME	= libpf.a
+LIB_NAME	= libftprintf.a
 
 CC			= gcc
 
 INCLUDE		= include/
 
-FLAGS		= #-Wall -Wextra -Werror -g
+FLAGS		= -g#-Wall -Wextra -Werror -g
 
 SRC_NAME	= Flags.c			\
 			  Printer.c			\
@@ -37,7 +37,10 @@ OBJ			= ${addprefix ${OBJ_DIR}, ${OBJ_NAME}}
 all: ${LIB_NAME} ${NAME}
 
 ${NAME}: ${LIB_NAME}
-	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lpf
+	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
+
+bonus: ${LIB_NAME}
+	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
 
 ${LIB_NAME}: ${OBJ}
 	@ar rcs ${LIB_NAME} ${OBJ}

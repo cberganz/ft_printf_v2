@@ -6,11 +6,13 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/27 05:06:51 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/28 16:33:03 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+# define this printer_singleton()
 
 Printer	*printer_singleton(void)
 {
@@ -18,7 +20,6 @@ Printer	*printer_singleton(void)
 
 	return (&obj);
 }
-# define this printer_singleton()
 
 static const t_handler	g_handler[10] = {
 	&pass_argument,
@@ -39,12 +40,20 @@ void	flush(void)
 	this->offset = 0;
 }
 
-void	bufferize_arg(va_list args, const char **s)
+void	bufferize_arg()
 {
-	this->flags->init(s);
-	g_handler[(this->flags->flags & B_FORMAT_SPECIFIER) >> 8](args);
-	//this->flags->print_flags();
+	this->flags->init(this->format);
+	g_handler[(this->flags->flags & B_FORMAT_SPECIFIER) >> 8](this->args);
 	this->flags->reset();
+}
+
+void	bufferize_increment()
+{
+	this->buffer[this->offset++] = **this->format;
+	//this->buffer[this->offset] = '\0';
+	if (*(*this->format)++ == '\n' || this->offset == BUFFER_SIZE)
+		this->flush();
+	this->len++;
 }
 
 void	bufferize_char(char c)
@@ -72,72 +81,63 @@ void	bufferize_integer(unsigned long n, int base, char *base_str)
 		this->bufferize_char(base_str[n]);
 }
 
-void	pass_argument(va_list args)
+void	pass_argument()
 {
 	errno = EINVAL;
 	exit(errno);
 }
 
-void	handle_percent(va_list args)
+void	handle_percent()
 {
 	bufferize_char('%');
 }
 
-void	handle_char(va_list args)
+void	handle_char()
 {
-	char	c;
-
-	c = va_arg(args, int);
-	bufferize_char(c);
+	this->c = va_arg(this->args, int);
+	bufferize_char(this->c);
 }
 
-void	handle_string(va_list args)
+void	handle_string()
 {
-	char	*s;
-
-	s = va_arg(args, char *);
-	bufferize_string(s ? s : "(null)");
+	this->s = va_arg(this->args, char *);
+	bufferize_string(this->s ? this->s : "(null)");
 }
 
-void	handle_pointer(va_list args)
+void	handle_pointer()
 {
-	unsigned long	n;
-
-	n = va_arg(args, unsigned long);
-	bufferize_string("0x");
-	bufferize_integer(n, 16, "0123456789abcdef");
+	this->ulong = va_arg(this->args, unsigned long);
+	if (this->ulong)
+	{
+		bufferize_string("0x");
+		bufferize_integer(this->ulong, 16, "0123456789abcdef");
+	}
+	else
+		bufferize_string("(nil)");
 }
 
-void	handle_decimal(va_list args)
+void	handle_decimal()
 {
-	int	n;
-
-	n = va_arg(args, int);
-	if (n < 0)
+	this->i = va_arg(this->args, int);
+	if (this->i < 0)
 		this->bufferize_char('-');
-	bufferize_integer(abs(n), 10, "0123456789");
+	bufferize_integer((unsigned int)abs(this->i), 10, "0123456789");
 }
 
-void	handle_unsigned(va_list args)
+void	handle_unsigned()
 {
-	unsigned int	n;
-
-	n = va_arg(args, unsigned int);
-	bufferize_integer(n, 10, "0123456789");
+	this->uint = va_arg(this->args, unsigned int);
+	bufferize_integer(this->uint, 10, "0123456789");
 }
 
-void	handle_hexadecimal_lower(va_list args)
+void	handle_hexadecimal_lower()
 {
-	unsigned int	n;
-
-	n = (unsigned int)va_arg(args, unsigned int);
-	bufferize_integer(n, 16, "0123456789abcdef");
+	this->uint = va_arg(this->args, unsigned int);
+	bufferize_integer(this->uint, 16, "0123456789abcdef");
 }
 
-void	handle_hexadecimal_upper(va_list args)
+void	handle_hexadecimal_upper()
 {
-	unsigned int	n;
-
-	n = (unsigned int)va_arg(args, unsigned int);
-	bufferize_integer(n, 16, "0123456789ABCDEF");
+	this->uint = va_arg(this->args, unsigned int);
+	bufferize_integer(this->uint, 16, "0123456789ABCDEF");
 }
