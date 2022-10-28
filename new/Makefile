@@ -6,7 +6,7 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/10/28 03:44:30 by charles          ###   ########.fr        #
+#    Updated: 2022/10/28 20:14:34 by cberganz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJ_DIRS	= ${sort ${dir ${OBJ}}}
 OBJ_NAME	= ${SRC_NAME:.c=.o}
 OBJ			= ${addprefix ${OBJ_DIR}, ${OBJ_NAME}}
 
-all: ${LIB_NAME} ${NAME}
+all: ${LIB_NAME}# ${NAME}
 
 ${NAME}: ${LIB_NAME}
 	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf

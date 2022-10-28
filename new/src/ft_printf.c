@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/28 15:54:17 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/28 18:43:47 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 Printer	*printer_singleton(void);
 # define this printer_singleton()
 
-static void constructor() __attribute__((constructor));
 int	ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+static void constructor() __attribute__((constructor));
+static void destructor() __attribute__((destructor));
 
 static const t_handler	g_format_string_handler[3] =
 {
@@ -57,4 +58,9 @@ static void constructor(void)
 	this->bufferize_string = &bufferize_string;
 	this->bufferize_arg = &bufferize_arg;
 	this->bufferize_integer = &bufferize_integer;
+}
+
+static void destructor(void)
+{
+	this->flush();
 }
