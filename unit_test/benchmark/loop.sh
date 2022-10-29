@@ -15,9 +15,10 @@ function ProgressBar
 }
 
 it=${max}
+ProgressBar $((max - it)) ${max}
 while [ ${it} != 0 ]
 do
-	./a.out > /dev/null
+	./a.out > ${1}
 	ProgressBar $((max - it)) ${max}
 	it=$((it-1))
 done

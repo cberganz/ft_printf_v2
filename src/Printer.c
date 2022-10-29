@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/28 16:33:03 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/29 05:36:46 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,23 @@ Printer	*printer_singleton(void)
 
 	return (&obj);
 }
+
+static const uint8_t jump_table[128] = 
+{
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	9,	0,
+	0,	0,	0,	0,	0,	0,	0,	0,	0,	2,
+	5,	0,	0,	0,	0,	6,	0,	0,	0,	0,
+	0,	0,	4,	0,	0,	3,	0,	7,	0,	0,
+	8,	0,	0,	0,	0,	0,	0,	0
+};
 
 static const t_handler	g_handler[10] = {
 	&pass_argument,
@@ -36,32 +53,30 @@ static const t_handler	g_handler[10] = {
 
 void	flush(void)
 {
-	write(1, this->buffer, this->offset);
-	this->offset = 0;
+	write(1, this->buffer, this->_current - this->_start);
+	this->len += this->_current - this->_start;
+	this->_current = this->_start;
 }
 
 void	bufferize_arg()
 {
 	this->flags->init(this->format);
-	g_handler[(this->flags->flags & B_FORMAT_SPECIFIER) >> 8](this->args);
+	g_handler[jump_table[*(*this->format)++]](this->args);
 	this->flags->reset();
 }
 
 void	bufferize_increment()
 {
-	this->buffer[this->offset++] = **this->format;
-	//this->buffer[this->offset] = '\0';
-	if (*(*this->format)++ == '\n' || this->offset == BUFFER_SIZE)
+	*this->_current++ = **this->format;
+	if  (*(*this->format)++ == '\n' || this->_current == this->_end)
 		this->flush();
-	this->len++;
 }
 
 void	bufferize_char(char c)
 {
-	this->buffer[this->offset++] = c;
-	if (c == '\n' || this->offset == BUFFER_SIZE)
+	*this->_current++ = c;
+	if (c == '\n' || this->_current == this->_end)
 		this->flush();
-	this->len++;
 }
 
 void	bufferize_string(char *s)

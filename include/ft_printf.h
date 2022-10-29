@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/28 03:40:11 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/29 05:41:49 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,15 @@
 # include "Printer.h"
 # include "Flags.h"
 
-# define B_RESET					0b0000000000000000
-# define B_MINUS_FLAG				0b0000000000000001
-# define B_ZERO_FLAG				0b0000000000000010
-# define B_DOT_FLAG					0b0000000000000100
-# define B_HASHTAG_FLAG				0b0000000000001000
-# define B_SPACE_FLAG				0b0000000000010000
-# define B_PLUS_FLAG				0b0000000000100000
-# define B_FLAG_SPECIFIERS			0b0000000011111111
-# define B_PERCENT_FLAG				0b0000000100000000
-# define B_CHAR_FLAG				0b0000001000000000
-# define B_STRING_FLAG				0b0000001100000000
-# define B_POINTER_FLAG				0b0000010000000000
-# define B_DECIMAL_FLAG				0b0000010100000000
-# define B_INTEGER_FLAG				0b0000011000000000
-# define B_UNSIGNED_DECIMAL_FLAG	0b0000011100000000
-# define B_HEXADECIMAL_LOWER_FLAG	0b0000100000000000
-# define B_HEXADECIMAL_UPPER_FLAG	0b0000100100000000
-# define B_UNIMPLEMENTED			0b0000000000000000
-# define B_FORMAT_SPECIFIER			0b1111111100000000
+# define B_RESET			0b00000000
+# define B_MINUS_FLAG		0b00000001
+# define B_ZERO_FLAG		0b00000010
+# define B_DOT_FLAG			0b00000100
+# define B_HASHTAG_FLAG		0b00001000
+# define B_SPACE_FLAG		0b00010000
+# define B_PLUS_FLAG		0b00100000
+# define B_FLAG_SPECIFIER	0b00111111
+# define B_FORMAT_SPECIFIER	0b11000000
 
 int	ft_printf(const char *s, ...);
 
