@@ -22,8 +22,8 @@ int	main(void)
 		ft_printf("d :%d#\n", -2147483647);
 		ft_printf("i :%i#\n", i);
 		ft_printf("u :%u#\n", u);
-		ft_printf("x :%x#\n", x);
-		ft_printf("X :%X#\n", X);
+		ft_printf("x :%#x#\n", x);
+		ft_printf("X :%#X#\n", X);
 		ft_printf("%% :%%#\n");
 		ft_printf("X :%X#\n", X);
 		ft_printf("X :#\n");

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/29 05:41:49 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/30 00:11:22 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,26 @@
 # define B_FLAG_SPECIFIER	0b00111111
 # define B_FORMAT_SPECIFIER	0b11000000
 
-int	ft_printf(const char *s, ...);
+int		ft_printf(const char *s, ...);
 
-Printer	*printer_restore();
-void flush(void);
-void bufferize_char(char c);
-void bufferize_increment();
-void bufferize_string(char *s);
-void bufferize_integer(unsigned long n, int base, char *base_str);
-void bufferize_arg();
-void pass_argument();
-void handle_percent();
-void handle_char();
-void handle_string();
-void handle_pointer();
-void handle_decimal();
-void handle_unsigned();
-void handle_hexadecimal_lower();
-void handle_hexadecimal_upper();
+Printer	*printer_singleton(void);
 
-Flags	*flags_construct();
-static void	init(const char **s);
-static void	reset(void);
-static bool	is_flag_set(uint16_t flag);
-static void	print_flags(void);
+void	flush(void);
+void	bufferize_char(char c);
+void	bufferize_increment(void);
+void	bufferize_string(char *s);
+void	bufferize_integer(unsigned long n, int base, char *base_str);
+void	bufferize_arg(void);
+void	handle_illegal_argument(void);
+void	handle_percent(void);
+void	handle_char(void);
+void	handle_string(void);
+void	handle_pointer(void);
+void	handle_decimal(void);
+void	handle_unsigned(void);
+void	handle_hexadecimal_lower(void);
+void	handle_hexadecimal_upper(void);
+
+void	flags_construct(void);
 
 #endif

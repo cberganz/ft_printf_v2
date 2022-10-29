@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/29 04:57:11 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/30 00:07:29 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@
 # include <errno.h>
 
 # define BUFFER_SIZE 1048
+# define this printer_singleton()
 
 typedef struct s_printer
 {
 	const char		**format;
 	va_list			args;
-	Flags			*flags;
+	Flags			flags;
 	char			buffer[BUFFER_SIZE];
 	char			*_start;
 	char			*_current;
 	char			*_end;
+	char			*_save_current;
 	size_t			len;
 	char			c;
 	char			*s;
@@ -37,23 +39,12 @@ typedef struct s_printer
 	int				i;
 	unsigned int	uint;
 
-	void		(*flush)();
+	void			(*flush)();
 
-	void		(*pass_argument)();
-	void		(*handle_percent)();
-	void		(*handle_char)();
-	void		(*handle_string)();
-	void		(*handle_pointer)();
-	void		(*handle_decimal)();
-	void		(*handle_unsigned)();
-	void		(*handle_hexadecimal_lower)();
-	void		(*handle_hexadecimal_upper)();
-
-	void		(*bufferize_arg)();
-	void		(*bufferize_char)(char);
-	void		(*bufferize_increment)();
-	void		(*bufferize_string)(char*);
-	void		(*bufferize_integer)(unsigned long, int, char*);
+	void			(*bufferize_arg)();
+	void			(*bufferize_char)(char);
+	void			(*bufferize_increment)();
+	void			(*bufferize_integer)(unsigned long, int, char*);
 
 }	Printer;
 

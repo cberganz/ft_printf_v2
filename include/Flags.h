@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:42:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/29 05:42:40 by charles          ###   ########.fr       */
+/*   Updated: 2022/10/30 00:11:37 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 typedef struct s_flags {
 	uint8_t		flags;
-	uint32_t	field_width;
-	uint32_t	precision;
+	uint32_t	width;
+	uint32_t	prec;
 
-	void		(*init)(const char**);
+	char		*(*init)(const char**);
 	void		(*reset)();
 
 	bool		(*is_flag_set)(uint16_t);
