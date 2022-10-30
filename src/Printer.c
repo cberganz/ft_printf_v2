@@ -6,11 +6,12 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 00:11:46 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/30 23:23:44 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+# define this printer_singleton()
 
 Printer	*printer_singleton(void)
 {
@@ -58,7 +59,13 @@ void	flush(void)
 void	bufferize_arg(void)
 {
 	this->_save_current = this->flags.init(this->format);
-	g_handler[g_jump_table[*(*this->format)++]](this->args);
+	g_handler[g_jump_table[*(*this->format)++]]();
+	if (this->flags.width)
+	{
+		int offset = this->flags.width - (this->_current - this->_save_current);
+		for (int i = 0 ; i < offset ; i++)
+			bufferize_char(' ');
+	}
 	this->flags.reset();
 }
 

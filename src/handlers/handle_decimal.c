@@ -6,11 +6,12 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 17:20:28 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/29 22:46:45 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:58:22 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+# define this printer_singleton()
 
 void	handle_decimal(void)
 {

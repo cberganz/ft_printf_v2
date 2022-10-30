@@ -6,11 +6,12 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 00:11:42 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/30 21:57:09 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+# define this printer_singleton()
 
 static const uint8_t	g_flags_map[128] =
 {
@@ -31,7 +32,7 @@ static const uint8_t	g_flags_map[128] =
 
 char	*init(const char **s)
 {
-	if (g_flags_map[*++(*s)] & B_FORMAT_SPECIFIER)
+	if (g_flags_map[*++(*s)] & B_FORMAT_SPECIFIER) // error with ++ here: it jumps the format specifier at end
 		return (this->_current);
 	if (g_flags_map[**s])
 	{
@@ -41,8 +42,11 @@ char	*init(const char **s)
 				this->flags.prec = this->flags.prec * 10 + *(*s)++ - '0';
 	}
 	else if (isdigit(**s))
+	{
 		while (isdigit(**s))
 			this->flags.width = this->flags.width * 10 + *(*s)++ - '0';
+		*(*s)--;
+	}
 	init(s);
 }
 

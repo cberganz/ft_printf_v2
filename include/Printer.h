@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 00:07:29 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:56:41 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <errno.h>
 
 # define BUFFER_SIZE 1048
-# define this printer_singleton()
 
 typedef struct s_printer
 {
