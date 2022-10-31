@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 20:56:41 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/31 19:54:44 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 # define BUFFER_SIZE 1048
 
+typedef void	(*t_func)();
+
 typedef struct s_printer
 {
 	const char		**format;
@@ -31,6 +33,7 @@ typedef struct s_printer
 	char			*_current;
 	char			*_end;
 	char			*_save_current;
+	char			*special_buffer;
 	size_t			len;
 	char			c;
 	char			*s;
@@ -43,7 +46,7 @@ typedef struct s_printer
 	void			(*bufferize_arg)();
 	void			(*bufferize_char)(char);
 	void			(*bufferize_increment)();
-	void			(*bufferize_integer)(unsigned long, int, char*);
+	void			(*bufferize_integer)(unsigned long, int, char*, t_func);
 
 }	Printer;
 

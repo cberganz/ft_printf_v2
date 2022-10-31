@@ -6,21 +6,21 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 17:20:28 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 20:58:22 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/31 19:57:18 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 # define this printer_singleton()
 
-void	handle_decimal(void)
+void	handle_decimal(t_func f)
 {
 	this->i = va_arg(this->args, int);
 	if (this->i < 0)
-		this->bufferize_char('-');
+		f('-');
 	else if (this->flags.flags & B_PLUS_FLAG)
-		this->bufferize_char('+');
+		f('+');
 	else if (this->flags.flags & B_SPACE_FLAG)
-		this->bufferize_char(' ');
-	bufferize_integer((unsigned int)abs(this->i), 10, "0123456789");
+		f(' ');
+	bufferize_integer((unsigned int)abs(this->i), 10, "0123456789", f);
 }

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/30 23:23:44 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/10/31 20:07:51 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,34 @@ void	flush(void)
 	this->_current = this->_start;
 }
 
+#define OPT_SIZE 42
+
+void	print_width(size_t offset)
+{
+	for (int i = 0 ; i < offset ; i++)
+		bufferize_char(' ');
+}
+
+void	width_handler(void)
+{
+	if (this->flags.flags & B_MINUS_FLAG)
+	{
+		this->special_buffer = (char *)malloc(OPT_SIZE);
+		g_handler[g_jump_table[*(*this->format)++]](&bufferize_char);
+		print_width(this->flags.width - (this->_current - this->_save_current));
+		bufferize_string(this->special_buffer);
+	}
+	else
+		print_width(this->flags.width - (this->_current - this->_save_current));
+}
+
 void	bufferize_arg(void)
 {
 	this->_save_current = this->flags.init(this->format);
-	g_handler[g_jump_table[*(*this->format)++]]();
 	if (this->flags.width)
-	{
-		int offset = this->flags.width - (this->_current - this->_save_current);
-		for (int i = 0 ; i < offset ; i++)
-			bufferize_char(' ');
-	}
+		width_handler();
+	else
+	g_handler[g_jump_table[*(*this->format)++]](&bufferize_char);
 	this->flags.reset();
 }
 
@@ -76,6 +94,13 @@ void	bufferize_increment(void)
 		this->flush();
 }
 
+void	special_bufferize_char(char c)
+{
+	*this->_special_current++ = c;
+	if (c == '\n' || this->_current == this->_end)
+		this->flush();
+}
+
 void	bufferize_char(char c)
 {
 	*this->_current++ = c;
@@ -83,13 +108,13 @@ void	bufferize_char(char c)
 		this->flush();
 }
 
-void	bufferize_integer(unsigned long n, int base, char *base_str)
+void	bufferize_integer(unsigned long n, int base, char *base_str, t_func f)
 {
 	if (n >= base)
 	{
-		this->bufferize_integer(n / base, base, base_str);
-		this->bufferize_char(base_str[n % base]);
+		bufferize_integer(n / base, base, base_str, f);
+		f(base_str[n % base]);
 	}
 	else
-		this->bufferize_char(base_str[n]);
+		f(base_str[n]);
 }
