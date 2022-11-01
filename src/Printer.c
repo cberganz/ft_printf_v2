@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 20:07:51 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:49:01 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,41 @@ void	flush(void)
 	this->_current = this->_start;
 }
 
-#define OPT_SIZE 42
+#define OPT_SIZE 4096
 
 void	print_width(size_t offset)
 {
-	for (int i = 0 ; i < offset ; i++)
-		bufferize_char(' ');
+	char c;
+
+	if (this->flags.flags & B_ZERO_FLAG)
+		c = '0';
+	else
+		c = ' ';
+	for (size_t i = 0 ; i < offset ; i++)
+		bufferize_char(c);
 }
 
 void	width_handler(void)
 {
 	if (this->flags.flags & B_MINUS_FLAG)
 	{
-		this->special_buffer = (char *)malloc(OPT_SIZE);
 		g_handler[g_jump_table[*(*this->format)++]](&bufferize_char);
 		print_width(this->flags.width - (this->_current - this->_save_current));
-		bufferize_string(this->special_buffer);
 	}
 	else
-		print_width(this->flags.width - (this->_current - this->_save_current));
+	{
+		this->special_buffer = (char *)malloc(OPT_SIZE);
+		if (!this->special_buffer)
+			exit(1);
+		memset(this->special_buffer, 0, OPT_SIZE * sizeof(char));
+		this->_special_current = this->special_buffer;
+		g_handler[g_jump_table[*(*this->format)++]](&special_bufferize_char);
+		this->_special_current = '\0';
+		if (this->_special_current - this->special_buffer > 0)
+			print_width(this->flags.width - (this->_special_current - this->special_buffer));
+		bufferize_string(this->special_buffer, &bufferize_char);
+		free(this->special_buffer);
+	}
 }
 
 void	bufferize_arg(void)
@@ -83,7 +99,7 @@ void	bufferize_arg(void)
 	if (this->flags.width)
 		width_handler();
 	else
-	g_handler[g_jump_table[*(*this->format)++]](&bufferize_char);
+		g_handler[g_jump_table[*(*this->format)++]](&bufferize_char);
 	this->flags.reset();
 }
 

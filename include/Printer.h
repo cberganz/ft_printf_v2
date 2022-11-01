@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 19:54:44 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:29:16 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef struct s_printer
 	char			*_end;
 	char			*_save_current;
 	char			*special_buffer;
+	char			*_special_start;
+	char			*_special_current;
+	char			*_special_end;
 	size_t			len;
 	char			c;
 	char			*s;

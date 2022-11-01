@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 19:55:26 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:30:05 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ Printer	*printer_singleton(void);
 
 void	flush(void);
 void	bufferize_char(char c);
+void	special_bufferize_char(char c);
 void	bufferize_increment(void);
 void	bufferize_string(char *s, t_func f);
 void	bufferize_integer(unsigned long n, int base, char *base_str, t_func f);
