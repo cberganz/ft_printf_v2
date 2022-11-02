@@ -6,15 +6,14 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 19:52:14 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/02 20:14:14 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 # define this printer_singleton()
 
-static const uint8_t	g_flags_map[128] =
-{
+static const uint8_t	g_flags_map[128] = {
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -32,14 +31,18 @@ static const uint8_t	g_flags_map[128] =
 
 char	*init(const char **s)
 {
-	if (g_flags_map[*++(*s)] & B_FORMAT_SPECIFIER) // error with ++ here: it jumps the format specifier at end
+	if (g_flags_map[*++(*s)] & B_FORMAT_SPECIFIER)
 		return (this->_current);
 	if (g_flags_map[**s])
 	{
 		this->flags.flags |= g_flags_map[**s];
 		if (g_flags_map[**s] & B_DOT_FLAG)
+		{
+			*(*s)++;
 			while (isdigit(**s))
 				this->flags.prec = this->flags.prec * 10 + *(*s)++ - '0';
+			*(*s)--;
+		}
 	}
 	else if (isdigit(**s))
 	{
@@ -53,6 +56,7 @@ char	*init(const char **s)
 void	reset(void)
 {
 	this->flags.flags = B_RESET;
+	this->flags.sign = 0;
 	this->flags.width = 0;
 	this->flags.prec = 0;
 	this->_save_current = NULL;
@@ -78,6 +82,7 @@ void	print_flags(void)
 
 void	flags_construct(void)
 {
+	this->flags.sign = 0;
 	this->flags.init = &init;
 	this->flags.reset = &reset;
 	this->flags.is_flag_set = &is_flag_set;
