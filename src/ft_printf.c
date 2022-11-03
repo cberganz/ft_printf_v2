@@ -6,14 +6,18 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 19:54:46 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:11:31 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# define this printer_singleton()
 
-Printer	*printer_singleton(void);
+t_printer	*printer(void)
+{
+	static t_printer	obj;
+
+	return (&obj);
+}
 
 int		ft_printf(const char *s, ...) \
 	__attribute__ ((format (printf, 1, 2)));
@@ -27,26 +31,21 @@ static const t_handler	g_format_string_handler[3] = {
 
 int	ft_printf(const char *s, ...)
 {
-	va_start(this->args, s);
-	this->format = &s;
+	va_start(printer()->args, s);
+	printer()->format = &s;
 	while (*s)
-		g_format_string_handler[*s == '%']();
-	va_end(this->args);
-	this->flush();
-	return (this->len);
+		g_format_string_handler[*s == '%'](printer());
+	va_end(printer()->args);
+	flush(printer());
+	return (printer()->len);
 }
 
 void	constructor(void)
 {
-	flags_construct();
-	this->_start = &this->buffer[0];
-	this->_current = this->_start;
-	this->_end = &this->buffer[BUFFER_SIZE - 1];
-	this->_save_current = NULL;
-	this->len = 0;
-	this->flush = &flush;
-	this->bufferize_char = &bufferize_char;
-	this->bufferize_increment = &bufferize_increment;
-	this->bufferize_arg = &bufferize_arg;
-	this->bufferize_integer = &bufferize_integer;
+	printer()->flags.sign = 0;
+	printer()->_start = &printer()->buffer[0];
+	printer()->_current = printer()->_start;
+	printer()->_end = &printer()->buffer[BUFFER_SIZE - 1];
+	printer()->_save_current = NULL;
+	printer()->len = 0;
 }

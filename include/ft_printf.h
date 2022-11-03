@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/01 16:30:05 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:09:53 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,28 @@
 # define B_FLAG_SPECIFIER	0b00111111
 # define B_FORMAT_SPECIFIER	0b11000000
 
-int		ft_printf(const char *s, ...);
+int			ft_printf(const char *s, ...);
 
-Printer	*printer_singleton(void);
+t_printer	*printer_singleton(void);
 
-void	flush(void);
-void	bufferize_char(char c);
-void	special_bufferize_char(char c);
-void	bufferize_increment(void);
-void	bufferize_string(char *s, t_func f);
-void	bufferize_integer(unsigned long n, int base, char *base_str, t_func f);
-void	bufferize_arg(void);
-void	handle_illegal_argument(t_func f);
-void	handle_percent(t_func f);
-void	handle_char(t_func f);
-void	handle_string(t_func f);
-void	handle_pointer(t_func f);
-void	handle_decimal(t_func f);
-void	handle_unsigned(t_func f);
-void	handle_hexadecimal_lower(t_func f);
-void	handle_hexadecimal_upper(t_func f);
+void		flush(t_printer *printer);
+void		bufferize_char(char c, t_printer *printer);
+void		special_bufferize_char(char c, t_printer *printer);
+void		bufferize_increment(t_printer *printer);
+void		bufferize_string(char *s, t_func f, t_printer *printer);
+void		bufferize_integer(unsigned long n, int base, \
+								char *base_str, t_func f, t_printer *printer);
+void		bufferize_arg(t_printer *printer);
+void		handle_illegal_argument(t_func f, t_printer *printer);
+void		handle_percent(t_func f, t_printer *printer);
+void		handle_char(t_func f, t_printer	*printer);
+void		handle_string(t_func f, t_printer *printer);
+void		handle_pointer(t_func f, t_printer *printer);
+void		handle_decimal(t_func f, t_printer *printer);
+void		handle_unsigned(t_func f, t_printer *printer);
+void		handle_hexadecimal_lower(t_func f, t_printer *printer);
+void		handle_hexadecimal_upper(t_func f, t_printer *printer);
 
-void	flags_construct(void);
+void		flags_construct(void);
 
 #endif

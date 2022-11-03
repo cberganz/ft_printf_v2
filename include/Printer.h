@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/01 16:29:16 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:08:25 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_printer
 {
 	const char		**format;
 	va_list			args;
-	Flags			flags;
+	t_flags			flags;
 	char			buffer[BUFFER_SIZE];
 	char			*_start;
 	char			*_current;
@@ -38,21 +38,10 @@ typedef struct s_printer
 	char			*_special_current;
 	char			*_special_end;
 	size_t			len;
-	char			c;
-	char			*s;
-	unsigned long	ulong;
-	int				i;
-	unsigned int	uint;
-
-	void			(*flush)();
-
-	void			(*bufferize_arg)();
-	void			(*bufferize_char)(char);
-	void			(*bufferize_increment)();
-	void			(*bufferize_integer)(unsigned long, int, char*, t_func);
-
-}	Printer;
+}	t_printer;
 
 typedef void	(*t_handler)();
+char			*init_flags(const char **s, t_printer *printer);
+void			reset_flags(t_printer *printer);
 
 #endif

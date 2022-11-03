@@ -6,21 +6,22 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 17:20:48 by cberganz          #+#    #+#             */
-/*   Updated: 2022/10/31 19:56:13 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:01:03 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# define this printer_singleton()
 
-void	handle_pointer(t_func f)
+void	handle_pointer(t_func f, t_printer *printer)
 {
-	this->ulong = va_arg(this->args, unsigned long);
-	if (this->ulong)
+	unsigned long	arg;
+
+	arg = va_arg(printer->args, unsigned long);
+	if (arg)
 	{
-		bufferize_string("0x", f);
-		bufferize_integer(this->ulong, 16, "0123456789abcdef", f);
+		bufferize_string("0x", f, printer);
+		bufferize_integer(arg, 16, "0123456789abcdef", f, printer);
 	}
 	else
-		bufferize_string("(nil)", f);
+		bufferize_string("(nil)", f, printer);
 }

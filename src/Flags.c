@@ -6,12 +6,11 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/02 20:14:14 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:01:28 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# define this printer_singleton()
 
 static const uint8_t	g_flags_map[128] = {
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -29,62 +28,35 @@ static const uint8_t	g_flags_map[128] = {
 	64,	0,	0,	0,	0,	0,	0,	0
 };
 
-char	*init(const char **s)
+char	*init_flags(const char **s, t_printer *printer)
 {
 	if (g_flags_map[*++(*s)] & B_FORMAT_SPECIFIER)
-		return (this->_current);
+		return (printer->_current);
 	if (g_flags_map[**s])
 	{
-		this->flags.flags |= g_flags_map[**s];
+		printer->flags.flags |= g_flags_map[**s];
 		if (g_flags_map[**s] & B_DOT_FLAG)
 		{
 			*(*s)++;
 			while (isdigit(**s))
-				this->flags.prec = this->flags.prec * 10 + *(*s)++ - '0';
+				printer->flags.prec = printer->flags.prec * 10 + *(*s)++ - '0';
 			*(*s)--;
 		}
 	}
 	else if (isdigit(**s))
 	{
 		while (isdigit(**s))
-			this->flags.width = this->flags.width * 10 + *(*s)++ - '0';
+			printer->flags.width = printer->flags.width * 10 + *(*s)++ - '0';
 		*(*s)--;
 	}
-	init(s);
+	init_flags(s, printer);
 }
 
-void	reset(void)
+void	reset_flags(t_printer *printer)
 {
-	this->flags.flags = B_RESET;
-	this->flags.sign = 0;
-	this->flags.width = 0;
-	this->flags.prec = 0;
-	this->_save_current = NULL;
-}
-
-bool	is_flag_set(uint16_t flag)
-{
-	return (this->flags.flags & flag);
-}
-
-void	print_flags(void)
-{
-	printf("flags | B_MINUS_FLAG : %d\n", this->flags.is_flag_set(B_MINUS_FLAG));
-	printf("flags | B_ZERO_FLAG : %d\n", this->flags.is_flag_set(B_ZERO_FLAG));
-	printf("flags | B_DOT_FLAG : %d\n", this->flags.is_flag_set(B_DOT_FLAG));
-	printf("flags | B_HASHTAG_FLAG : %d\n", this->flags.is_flag_set(B_HASHTAG_FLAG));
-	printf("flags | B_SPACE_FLAG : %d\n", this->flags.is_flag_set(B_SPACE_FLAG));
-	printf("flags | B_PLUS_FLAG : %d\n", this->flags.is_flag_set(B_PLUS_FLAG));
-	printf("flags | FORMAT_IDENTIFIER : %d\n", this->flags.flags & B_FORMAT_SPECIFIER);
-	printf("flags | FIELD_WIDTH : %d\n", this->flags.width);
-	printf("flags | PRECISION : %d\n", this->flags.prec);
-}
-
-void	flags_construct(void)
-{
-	this->flags.sign = 0;
-	this->flags.init = &init;
-	this->flags.reset = &reset;
-	this->flags.is_flag_set = &is_flag_set;
-	this->flags.print_flags = &print_flags;
+	printer->flags.flags = B_RESET;
+	printer->flags.sign = 0;
+	printer->flags.width = 0;
+	printer->flags.prec = 0;
+	printer->_save_current = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:42:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/02 19:53:37 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 21:46:12 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@ typedef struct s_flags {
 	uint32_t	width;
 	uint32_t	prec;
 	uint8_t		sign;
-
-	char		*(*init)(const char**);
-	void		(*reset)();
-
-	bool		(*is_flag_set)(uint16_t);
-	uint32_t	(*get_field_minimum_width)();
-	uint32_t	(*get_precision)();
-	void		(*print_flags)();
-}	Flags;
+}	t_flags;
 
 #endif // PRINTER_H

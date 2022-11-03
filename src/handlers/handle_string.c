@@ -6,18 +6,19 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 17:20:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/02 21:34:54 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:01:11 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# define this printer_singleton()
 
-void	handle_string(t_func f)
+void	handle_string(t_func f, t_printer *printer)
 {
-	this->s = va_arg(this->args, char *);
-	if (this->s)
-		bufferize_string(this->s, f);
+	char	*arg;
+
+	arg = va_arg(printer->args, char *);
+	if (arg)
+		bufferize_string(arg, f, printer);
 	else
-		bufferize_string("(null)", f);
+		bufferize_string("(null)", f, printer);
 }
