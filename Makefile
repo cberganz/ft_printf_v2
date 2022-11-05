@@ -6,7 +6,7 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/10/30 21:11:08 by cberganz         ###   ########.fr        #
+#    Updated: 2022/11/04 19:48:28 by cberganz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,13 +44,13 @@ OBJ_DIRS	= ${sort ${dir ${OBJ}}}
 OBJ_NAME	= ${SRC_NAME:.c=.o}
 OBJ			= ${addprefix ${OBJ_DIR}, ${OBJ_NAME}}
 
-all: ${LIB_NAME} ${NAME}
+all: ${LIB_NAME} #${NAME}
 
 ${NAME}: ${LIB_NAME}
 	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
 
 bonus: ${LIB_NAME}
-	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
+	#${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
 
 ${LIB_NAME}: ${OBJ}
 	@ar rcs ${LIB_NAME} ${OBJ}
@@ -64,7 +64,9 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.c
 	${CC} ${FLAGS} -I${INCLUDE} -c $< -o $@
 
 benchmark: all
-	@bash unit_test/benchmark/benchmark.sh
+	gcc benchmark/benchmark.c -I./include/ -L. -lftprintf -o newVersion
+	mv newVersion benchmark/newVersion
+	hyperfine './benchmark/newVersion' './benchmark/oldVersion'
 
 clean:
 	rm -rf ${OBJ_DIR}
