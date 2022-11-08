@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/03 22:09:53 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:20:30 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void		handle_decimal(t_func f, t_printer *printer);
 void		handle_unsigned(t_func f, t_printer *printer);
 void		handle_hexadecimal_lower(t_func f, t_printer *printer);
 void		handle_hexadecimal_upper(t_func f, t_printer *printer);
+
+void		print_width(long long offset, t_printer *printer);
 
 void		flags_construct(void);
 

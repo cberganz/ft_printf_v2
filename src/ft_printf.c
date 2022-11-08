@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/03 22:11:31 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:03:43 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ int	ft_printf(const char *s, ...)
 void	constructor(void)
 {
 	printer()->flags.sign = 0;
-	printer()->_start = &printer()->buffer[0];
+	printer()->_start = &*printer()->buffer;
 	printer()->_current = printer()->_start;
 	printer()->_end = &printer()->buffer[BUFFER_SIZE - 1];
 	printer()->_save_current = NULL;
+	printer()->_special_start = &*printer()->special_buffer;
 	printer()->len = 0;
 }

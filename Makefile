@@ -6,7 +6,7 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/11/04 19:48:28 by cberganz         ###   ########.fr        #
+#    Updated: 2022/11/08 11:28:24 by cberganz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,9 @@ FLAGS		= -g3#-Wall -Wextra -Werror -g
 SRC_NAME	= Flags.c								\
 			  Printer.c								\
 			  ft_printf.c							\
-			  handlers/bufferize_string.c			\
-			  handlers/handle_illegal_argument.c	\
-			  handlers/handle_char.c				\
-			  handlers/handle_string.c				\
-			  handlers/handle_percent.c				\
-			  handlers/handle_decimal.c				\
-			  handlers/handle_pointer.c				\
-			  handlers/handle_unsigned.c			\
-			  handlers/handle_hexadecimal_lower.c	\
-			  handlers/handle_hexadecimal_upper.c
+			  handlers_1.c							\
+			  handlers_2.c							\
+			  utils.c
 
 TESTER_NAME	= unit_test/test.c
 
