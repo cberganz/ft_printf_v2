@@ -6,23 +6,14 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/08 14:03:43 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:43:20 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-t_printer	*printer(void)
-{
-	static t_printer	obj;
-
-	return (&obj);
-}
-
 int		ft_printf(const char *s, ...) \
 	__attribute__ ((format (printf, 1, 2)));
-void	constructor(void) \
-	__attribute__((constructor));
 
 static const t_handler	g_format_string_handler[3] = {
 	&bufferize_increment,
@@ -31,22 +22,14 @@ static const t_handler	g_format_string_handler[3] = {
 
 int	ft_printf(const char *s, ...)
 {
-	va_start(printer()->args, s);
-	printer()->format = &s;
-	while (*s)
-		g_format_string_handler[*s == '%'](printer());
-	va_end(printer()->args);
-	flush(printer());
-	return (printer()->len);
-}
+	t_printer	*p;
 
-void	constructor(void)
-{
-	printer()->flags.sign = 0;
-	printer()->_start = &*printer()->buffer;
-	printer()->_current = printer()->_start;
-	printer()->_end = &printer()->buffer[BUFFER_SIZE - 1];
-	printer()->_save_current = NULL;
-	printer()->_special_start = &*printer()->special_buffer;
-	printer()->len = 0;
+	p = restore();
+	va_start(p->args, s);
+	p->format = &s;
+	while (*s)
+		g_format_string_handler[*s == '%'](p);
+	va_end(p->args);
+	flush(p);
+	return (p->len);
 }

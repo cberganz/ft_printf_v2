@@ -6,13 +6,13 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/08 14:46:59 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/09 00:49:49 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static const uint8_t	g_jump_table[128] = {
+static const uint8_t	g_jump[128] = {
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -41,69 +41,64 @@ static const t_handler	g_handler[10] = {
 	&handle_hexadecimal_upper,
 };
 
-void	flush(t_printer *printer)
+void	flush(t_printer *p)
 {
-	write(1, printer->buffer, printer->_current - printer->_start);
-	printer->len += printer->_current - printer->_start;
-	printer->_current = printer->_start;
+	write(1, p->buffer, p->_n_current - p->_n_start);
+	p->len += p->_n_current - p->_n_start;
+	p->_n_current = p->_n_start;
 }
 
-void	bufferize_arg(t_printer *printer)
+void	bufferize_arg(t_printer *p)
 {
-	printer->_save_current = init_flags(printer->format, printer);
-	if (g_jump_table[**printer->format] >= 5 && printer->flags.width == 0)
+	p->_n_save_current = init_flags(p->format, p);
+	if (g_jump[(int)**p->format] >= 5 && p->width == 0)
 	{
-		printer->flags.width = printer->flags.prec;
-		printer->flags.flags |= B_ZERO_FLAG;
-		printer->flags.flags &= ~B_DOT_FLAG;
-		//if (!printer->flags.prec && printer->flags.flags & (B_PLUS_FLAG | B_DOT_FLAG))
-		//	printer->flags.sign = 1;
+		p->width = p->prec;
+		p->flags |= B_ZERO_FLAG;
+		p->flags &= ~B_DOT_FLAG;
 	}
-	if (printer->flags.width && printer->flags.flags & B_MINUS_FLAG)
+	if (p->width && p->flags & B_MINUS_FLAG)
 	{
-		g_handler[g_jump_table[*(*printer->format)++]](&bufferize_char, printer);
-		print_width(printer->flags.width - (printer->_current - printer->_save_current), printer);
+		g_handler[g_jump[(int)*(*p->format)++]](&bufferize_char, p);
+		print_width(p->width - (p->_n_current - p->_n_save_current), p);
 	}
-	else if (printer->flags.width)
+	else if (p->width)
 	{
-		printer->_special_current = &*printer->special_buffer;
-		g_handler[g_jump_table[*(*printer->format)++]](&special_bufferize_char, printer);
-		*printer->_special_current = '\0';
-		print_width(printer->flags.width - (printer->_special_current - printer->_special_start) - printer->flags.sign, printer);
-		bufferize_string(printer->_special_start, &bufferize_char, printer);
+		p->_s_current = p->_s_start;
+		g_handler[g_jump[(int)*(*p->format)++]](&special_bufferize_char, p);
+		*p->_s_current = '\0';
+		print_width(p->width - (p->_s_current - p->_s_start) - p->sign, p);
+		bufferize_string(p->_s_start, &bufferize_char, p);
 	}
 	else
-		g_handler[g_jump_table[*(*printer->format)++]](&bufferize_char, printer);
-	reset_flags(printer);
+		g_handler[g_jump[(int)*(*p->format)++]](&bufferize_char, p);
+	reset_flags(p);
 }
 
-void	bufferize_increment(t_printer *printer)
+void	bufferize_increment(t_printer *p)
 {
-	*printer->_current++ = **printer->format;
-	if (*(*printer->format)++ == '\n' || printer->_current == printer->_end)
-		flush(printer);
+	*p->_n_current++ = **p->format;
+	if (*(*p->format)++ == '\n' || p->_n_current == p->_n_end)
+		flush(p);
 }
 
-void	special_bufferize_char(char c, t_printer *printer)
+void	special_bufferize_char(char c, t_printer *p)
 {
-	if (!(printer->flags.flags & B_DOT_FLAG) || printer->flags.prec > 0)
+	if (p->_s_current == p->_s_end)
+		return ;
+	*p->_s_current++ = c;
+	if (p->flags & B_DOT_FLAG)
+		p->prec--;
+}
+
+void	bufferize_char(char c, t_printer *p)
+{
+	if (!(p->flags & B_DOT_FLAG) || p->prec > 0)
 	{
-		*printer->_special_current++ = c;
-		if (c == '\n' || printer->_current == printer->_end)
-			flush(printer);
-		if (printer->flags.flags & B_DOT_FLAG)
-			printer->flags.prec--;
-	}
-}
-
-void	bufferize_char(char c, t_printer *printer)
-{
-	if (!(printer->flags.flags & B_DOT_FLAG) || printer->flags.prec > 0)
-	{
-		*printer->_current++ = c;
-		if (c == '\n' || printer->_current == printer->_end)
-			flush(printer);
-		if (printer->flags.flags & B_DOT_FLAG)
-			printer->flags.prec--;
+		*p->_n_current++ = c;
+		if (c == '\n' || p->_n_current == p->_n_end)
+			flush(p);
+		if (p->flags & B_DOT_FLAG)
+			p->prec--;
 	}
 }

@@ -6,47 +6,47 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/08 11:25:49 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:51:43 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	handle_pointer(t_func f, t_printer *printer)
+void	handle_pointer(t_func f, t_printer *p)
 {
 	unsigned long	arg;
 
-	arg = va_arg(printer->args, unsigned long);
+	arg = va_arg(p->args, unsigned long);
 	if (arg)
 	{
-		bufferize_string("0x", f, printer);
-		bufferize_integer(arg, 16, "0123456789abcdef", f, printer);
+		bufferize_string("0x", f, p);
+		bufferize_integer(arg, g_base_16, f, p);
 	}
 	else
-		bufferize_string("(nil)", f, printer);
+		bufferize_string("(nil)", f, p);
 }
 
-void	handle_string(t_func f, t_printer *printer)
+void	handle_string(t_func f, t_printer *p)
 {
 	char	*arg;
 
-	arg = va_arg(printer->args, char *);
+	arg = va_arg(p->args, char *);
 	if (arg)
-		bufferize_string(arg, f, printer);
+		bufferize_string(arg, f, p);
 	else
-		bufferize_string("(null)", f, printer);
+		bufferize_string("(null)", f, p);
 }
 
-void	handle_unsigned(t_func f, t_printer *printer)
+void	handle_unsigned(t_func f, t_printer *p)
 {
 	unsigned int	arg;
 
-	arg = va_arg(printer->args, unsigned int);
-	bufferize_integer(arg, 10, "0123456789", f, printer);
+	arg = va_arg(p->args, unsigned int);
+	bufferize_integer(arg, g_base_10, f, p);
 }
 
-void	handle_illegal_argument(t_func f, t_printer *printer)
+void	handle_percent(t_func f, t_printer *p)
 {
-	errno = EINVAL;
-	exit(errno);
+	f('%', p);
 }
+

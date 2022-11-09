@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 21:33:51 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/08 14:20:30 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:42:44 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 
 # include "Printer.h"
-# include "Flags.h"
 
 # define B_RESET			0b00000000
 # define B_MINUS_FLAG		0b00000001
@@ -28,15 +27,13 @@
 
 int			ft_printf(const char *s, ...);
 
-t_printer	*printer_singleton(void);
-
 void		flush(t_printer *printer);
 void		bufferize_char(char c, t_printer *printer);
 void		special_bufferize_char(char c, t_printer *printer);
 void		bufferize_increment(t_printer *printer);
 void		bufferize_string(char *s, t_func f, t_printer *printer);
-void		bufferize_integer(unsigned long n, int base, \
-								char *base_str, t_func f, t_printer *printer);
+void		bufferize_integer(unsigned long n, t_base base, t_func f, \
+			t_printer *printer);
 void		bufferize_arg(t_printer *printer);
 void		handle_illegal_argument(t_func f, t_printer *printer);
 void		handle_percent(t_func f, t_printer *printer);
@@ -51,5 +48,6 @@ void		handle_hexadecimal_upper(t_func f, t_printer *printer);
 void		print_width(long long offset, t_printer *printer);
 
 void		flags_construct(void);
+t_printer	*restore(void);
 
 #endif

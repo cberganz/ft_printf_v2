@@ -6,7 +6,7 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/11/08 11:28:24 by cberganz         ###   ########.fr        #
+#    Updated: 2022/11/08 22:49:22 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC			= gcc
 
 INCLUDE		= include/
 
-FLAGS		= -g3#-Wall -Wextra -Werror -g
+FLAGS		= -Wall -Wextra -Werror -g
 
 SRC_NAME	= Flags.c								\
 			  Printer.c								\
