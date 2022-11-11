@@ -6,11 +6,11 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 00:49:49 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/10 03:34:02 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "Printer.h"
 
 static const uint8_t	g_jump[128] = {
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -67,8 +67,13 @@ void	bufferize_arg(t_printer *p)
 		p->_s_current = p->_s_start;
 		g_handler[g_jump[(int)*(*p->format)++]](&special_bufferize_char, p);
 		*p->_s_current = '\0';
+		//if (*p->_s_start == '-' && g_jump[(int)*(*p->format - 1)] >= 5)
+	//		bufferize_char(*p->_s_start++, p);
 		print_width(p->width - (p->_s_current - p->_s_start) - p->sign, p);
 		bufferize_string(p->_s_start, &bufferize_char, p);
+		if (*(*p->format - 1) == 'c' && *(p->_s_current - 1) == '\0')
+			bufferize_char('\0', p);
+		//p->_s_start = &*p->special_buffer;
 	}
 	else
 		g_handler[g_jump[(int)*(*p->format)++]](&bufferize_char, p);

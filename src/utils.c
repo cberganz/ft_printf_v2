@@ -6,11 +6,11 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:21:17 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 02:21:53 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/10 02:32:24 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "Printer.h"
 
 void	print_width(long long offset, t_printer *p)
 {
@@ -22,18 +22,6 @@ void	bufferize_string(char *s, t_func f, t_printer *p)
 {
 	while (*s)
 		f(*s++, p);
-}
-
-void	bufferize_integer(unsigned long n, t_base base, t_func f, \
-							t_printer *p)
-{
-	if (n >= (unsigned long)base.size)
-	{
-		bufferize_integer(n / base.size, base, f, p);
-		f(base.string[n % base.size], p);
-	}
-	else
-		f(base.string[n], p);
 }
 
 t_printer	*restore(void)
@@ -48,6 +36,7 @@ t_printer	*restore(void)
 		p._s_start = &*p.special_buffer;
 		p._s_end = &p.special_buffer[BUFFER_SIZE - 1];
 	}
+	p.len = 0;
 	return (&p);
 }
 

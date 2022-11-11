@@ -6,11 +6,11 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 00:44:50 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/09 23:09:30 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "Printer.h"
 
 static const uint8_t	g_flags_map[128] = {
 	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,

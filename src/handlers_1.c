@@ -6,23 +6,11 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 02:22:05 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/10 03:17:37 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-
-const t_base		g_base_10 = {10, "0123456789"};
-const t_base		g_base_16 = {16, "0123456789abcdef"};
-const t_base		g_base_16_upper = {16, "0123456789ABCDEF"};
-
-static const char	g_char_table[49] = {
-	0,		'-',	0,		0,		0,		0,		0,		0,		0,		0,
-	0,		0,		0,		0,		0,		0,		' ',	'-',	0,		0,
-	0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-	0,		0,		'+',	'-',	0,		0,		0,		0,		0,		0,
-	0,		0,		0,		0,		0,		0,		0,		'+',	'-'
-};
+#include "Printer.h"
 
 void	handle_char(t_func f, t_printer	*p)
 {
@@ -69,17 +57,20 @@ void	handle_hexadecimal_upper(t_func f, t_printer *p)
 **	 >>5 -> 0
 */
 
-void	handle_decimal(t_func f, t_printer	*p)
+void	handle_string(t_func f, t_printer *p)
 {
-	int	arg;
+	char	*arg;
 
-	arg = va_arg(p->args, int);
-	p->sign = arg < 0;
-	p->sign |= (p->flags & (B_PLUS_FLAG | B_SPACE_FLAG));
-	if (p->sign)
-		bufferize_char(g_char_table[p->sign], p);
-	p->sign = (p->sign && !p->prec);
-	bufferize_integer((unsigned int)ft_abs(arg), g_base_10, f, p);
+	arg = va_arg(p->args, char *);
+	if (arg)
+		bufferize_string(arg, f, p);
+	else
+		bufferize_string("(null)", f, p);
+}
+
+void	handle_percent(t_func f, t_printer *p)
+{
+	f('%', p);
 }
 
 void	handle_illegal_argument(t_func f, t_printer *p)

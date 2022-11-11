@@ -6,7 +6,7 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/11/08 22:49:22 by charles          ###   ########.fr        #
+#    Updated: 2022/11/09 23:27:55 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,11 @@ INCLUDE		= include/
 
 FLAGS		= -Wall -Wextra -Werror -g
 
-SRC_NAME	= Flags.c								\
-			  Printer.c								\
-			  ft_printf.c							\
-			  handlers_1.c							\
-			  handlers_2.c							\
+SRC_NAME	= Flags.c			\
+			  Printer.c			\
+			  ft_printf.c		\
+			  handlers_1.c		\
+			  handlers_2.c		\
 			  utils.c
 
 TESTER_NAME	= unit_test/test.c
@@ -37,16 +37,14 @@ OBJ_DIRS	= ${sort ${dir ${OBJ}}}
 OBJ_NAME	= ${SRC_NAME:.c=.o}
 OBJ			= ${addprefix ${OBJ_DIR}, ${OBJ_NAME}}
 
-all: ${LIB_NAME} #${NAME}
+all: ${LIB_NAME}
 
 ${NAME}: ${LIB_NAME}
-	${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
 
 bonus: ${LIB_NAME}
-	#${CC} ${FLAGS} ${TESTER_NAME} -o ${NAME} -L. -lftprintf
 
 ${LIB_NAME}: ${OBJ}
-	@ar rcs ${LIB_NAME} ${OBJ}
+	ar rcs ${LIB_NAME} ${OBJ}
 
 ${OBJ_DIRS}:
 	@mkdir -p $@
@@ -70,4 +68,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY : all clean fclean test re
+.PHONY : all clean fclean re bonus benchmark

@@ -6,19 +6,22 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 01:43:20 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/10 00:23:35 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "Printer.h"
 
-int		ft_printf(const char *s, ...) \
-	__attribute__ ((format (printf, 1, 2)));
+const t_base			g_base_10 = {10, "0123456789"};
+const t_base			g_base_16 = {16, "0123456789abcdef"};
+const t_base			g_base_16_upper = {16, "0123456789ABCDEF"};
 
 static const t_handler	g_format_string_handler[3] = {
 	&bufferize_increment,
 	&bufferize_arg
 };
+
+int	ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 
 int	ft_printf(const char *s, ...)
 {
