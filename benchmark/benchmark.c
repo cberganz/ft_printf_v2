@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 19:41:38 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/09 00:27:49 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/19 14:26:47 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
-#include "ft_printf.h"
+#include "../ft_printf.h"
 
 int	main(int argc, char *argv[])
 {

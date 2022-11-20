@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/10 03:34:02 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/20 19:29:09 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,21 @@ void	flush(t_printer *p)
 void	bufferize_arg(t_printer *p)
 {
 	p->_n_save_current = init_flags(p->format, p);
-	if (g_jump[(int)**p->format] >= 5 && p->width == 0)
-	{
-		p->width = p->prec;
-		p->flags |= B_ZERO_FLAG;
-		p->flags &= ~B_DOT_FLAG;
-	}
+	p->s_prec = p->prec;
+	p->_s_current = p->_s_start;
+	g_handler[g_jump[(int)*(*p->format)++]](&special_bufferize_char, p);
+	*p->_s_current = '\0';
+	if (p->width && !(p->flags & B_MINUS_FLAG))
+		print_width(p->width - (p->_s_current - p->_s_start) - (p->sign != 0), p);
+	if (p->sign)
+		bufferize_char(p->sign, p, false);
+	if (p->prec && g_jump[(int)*(*p->format - 1)] >= 5)
+		print_prec(p->prec - (p->_s_current - p->_s_start), p);
+	bufferize_string(p->_s_start, &bufferize_char, p);
 	if (p->width && p->flags & B_MINUS_FLAG)
-	{
-		g_handler[g_jump[(int)*(*p->format)++]](&bufferize_char, p);
-		print_width(p->width - (p->_n_current - p->_n_save_current), p);
-	}
-	else if (p->width)
-	{
-		p->_s_current = p->_s_start;
-		g_handler[g_jump[(int)*(*p->format)++]](&special_bufferize_char, p);
-		*p->_s_current = '\0';
-		//if (*p->_s_start == '-' && g_jump[(int)*(*p->format - 1)] >= 5)
-	//		bufferize_char(*p->_s_start++, p);
-		print_width(p->width - (p->_s_current - p->_s_start) - p->sign, p);
-		bufferize_string(p->_s_start, &bufferize_char, p);
-		if (*(*p->format - 1) == 'c' && *(p->_s_current - 1) == '\0')
-			bufferize_char('\0', p);
-		//p->_s_start = &*p->special_buffer;
-	}
-	else
-		g_handler[g_jump[(int)*(*p->format)++]](&bufferize_char, p);
+		print_width(p->width - (p->_s_current - p->_s_start) - (p->sign != 0), p);
+	if (*(*p->format - 1) == 'c' && *(p->_s_current - 1) == '\0')
+		bufferize_char('\0', p, false);
 	reset_flags(p);
 }
 
@@ -89,21 +78,22 @@ void	bufferize_increment(t_printer *p)
 
 void	special_bufferize_char(char c, t_printer *p)
 {
-	if (p->_s_current == p->_s_end)
-		return ;
-	*p->_s_current++ = c;
-	if (p->flags & B_DOT_FLAG)
-		p->prec--;
+	if (p->_s_current != p->_s_end && (!(p->flags & B_DOT_FLAG) || g_jump[(int)*(*p->format - 1)] >= 5 || p->s_prec > 0))
+	{
+		*p->_s_current++ = c;
+		if (g_jump[(int)*(*p->format - 1)] < 5 && p->flags & B_DOT_FLAG)
+			p->s_prec--;
+	}
 }
 
-void	bufferize_char(char c, t_printer *p)
+void	bufferize_char(char c, t_printer *p, bool width)
 {
-	if (!(p->flags & B_DOT_FLAG) || p->prec > 0)
+	if (!(p->flags & B_DOT_FLAG) || p->prec > 0 || g_jump[(int)*(*p->format - 1)] >= 5 || width)
 	{
 		*p->_n_current++ = c;
 		if (c == '\n' || p->_n_current == p->_n_end)
 			flush(p);
-		if (p->flags & B_DOT_FLAG)
+		if (g_jump[(int)*(*p->format - 1)] < 5 && p->flags & B_DOT_FLAG && !width)
 			p->prec--;
 	}
 }

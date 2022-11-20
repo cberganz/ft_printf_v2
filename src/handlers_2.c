@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/10 02:52:00 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/20 18:14:40 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	handle_decimal(t_func f, t_printer	*p)
 	p->sign = arg < 0;
 	p->sign |= p->flags & (B_PLUS_FLAG | B_SPACE_FLAG);
 	if (p->sign)
-		f(g_char_table[p->sign], p);
-	p->sign = 0;//(p->sign && !p->prec);
-	bufferize_integer((unsigned int)ft_abs(arg), g_base_10, f, p);
+		p->sign = g_char_table[p->sign];//f(g_char_table[p->sign], p, false)
+	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+		bufferize_integer((unsigned int)ft_abs(arg), g_base_10, f, p);
 }
 
 void	handle_pointer(t_func f, t_printer *p)
@@ -52,7 +52,8 @@ void	handle_unsigned(t_func f, t_printer *p)
 	unsigned int	arg;
 
 	arg = va_arg(p->args, unsigned int);
-	bufferize_integer(arg, g_base_10, f, p);
+	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+		bufferize_integer(arg, g_base_10, f, p);
 }
 
 void	bufferize_integer(unsigned long n, t_base base, t_func f, \
@@ -61,9 +62,9 @@ void	bufferize_integer(unsigned long n, t_base base, t_func f, \
 	if (n >= (unsigned long)base.size)
 	{
 		bufferize_integer(n / base.size, base, f, p);
-		f(base.string[n % base.size], p);
+		f(base.string[n % base.size], p, false);
 	}
 	else
-		f(base.string[n], p);
+		f(base.string[n], p, false);
 }
 

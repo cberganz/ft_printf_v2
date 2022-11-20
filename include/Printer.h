@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/10 00:26:09 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:36:29 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdarg.h>
 # include <string.h>
 # include <errno.h>
+# include <stdbool.h>
 
 /*
 **	Brief: Object containing all necessary datas and pointers for the current
@@ -60,6 +61,7 @@ typedef struct s_printer
 	uint8_t			flags;
 	uint32_t		width;
 	uint32_t		prec;
+	uint32_t		s_prec;
 	uint8_t			sign;
 	char			buffer[BUFFER_SIZE];
 	char			*_n_start;
@@ -102,14 +104,14 @@ extern const t_base	g_base_10;
 extern const t_base	g_base_16;
 extern const t_base	g_base_16_upper;
 
-typedef void		(*t_func)(char, t_printer *);
+typedef void		(*t_func)(char, t_printer *, bool);
 typedef void		(*t_handler)();
 
 char				*init_flags(const char **s, t_printer *printer);
 void				reset_flags(t_printer *printer);
 int					ft_abs(int v);
 void				flush(t_printer *printer);
-void				bufferize_char(char c, t_printer *printer);
+void				bufferize_char(char c, t_printer *printer, bool width);
 void				special_bufferize_char(char c, t_printer *printer);
 void				bufferize_increment(t_printer *printer);
 void				bufferize_string(char *s, t_func f, t_printer *printer);
@@ -126,6 +128,7 @@ void				handle_unsigned(t_func f, t_printer *printer);
 void				handle_hexadecimal_lower(t_func f, t_printer *printer);
 void				handle_hexadecimal_upper(t_func f, t_printer *printer);
 void				print_width(long long offset, t_printer *printer);
+void				print_prec(long long offset, t_printer *p);
 void				flags_construct(void);
 t_printer			*restore(void);
 

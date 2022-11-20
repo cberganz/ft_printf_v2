@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/10 03:17:37 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/20 18:16:28 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	handle_char(t_func f, t_printer	*p)
 	char	arg;
 
 	arg = va_arg(p->args, int);
-	f(arg, p);
+	f(arg, p, false);
 }
 
 void	handle_hexadecimal_lower(t_func f, t_printer *p)
@@ -25,9 +25,12 @@ void	handle_hexadecimal_lower(t_func f, t_printer *p)
 	unsigned int	arg;
 
 	arg = va_arg(p->args, unsigned int);
-	if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
-		bufferize_string("0x", f, p);
-	bufferize_integer(arg, g_base_16, f, p);
+	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+	{
+		if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
+			bufferize_string("0x", f, p);
+		bufferize_integer(arg, g_base_16, f, p);
+	}
 }
 
 void	handle_hexadecimal_upper(t_func f, t_printer *p)
@@ -35,9 +38,12 @@ void	handle_hexadecimal_upper(t_func f, t_printer *p)
 	unsigned int	arg;
 
 	arg = va_arg(p->args, unsigned int);
-	if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
-		bufferize_string("0X", f, p);
-	bufferize_integer(arg, g_base_16_upper, f, p);
+	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+	{
+		if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
+			bufferize_string("0X", f, p);
+		bufferize_integer(arg, g_base_16_upper, f, p);
+	}
 }
 
 /*
@@ -64,13 +70,13 @@ void	handle_string(t_func f, t_printer *p)
 	arg = va_arg(p->args, char *);
 	if (arg)
 		bufferize_string(arg, f, p);
-	else
+	else if (p->prec >= 6 || !(p->flags & B_DOT_FLAG))
 		bufferize_string("(null)", f, p);
 }
 
 void	handle_percent(t_func f, t_printer *p)
 {
-	f('%', p);
+	f('%', p, false);
 }
 
 void	handle_illegal_argument(t_func f, t_printer *p)
