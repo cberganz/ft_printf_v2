@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/20 18:16:28 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:39:43 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	handle_hexadecimal_lower(t_func f, t_printer *p)
 	unsigned int	arg;
 
 	arg = va_arg(p->args, unsigned int);
-	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+	if (!(!arg && (p->f & F_DOT) && p->p == 0))
 	{
-		if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
+		if ((p->f & F_HASHTAG) && arg != 0)
 			bufferize_string("0x", f, p);
 		bufferize_integer(arg, g_base_16, f, p);
 	}
@@ -38,9 +38,9 @@ void	handle_hexadecimal_upper(t_func f, t_printer *p)
 	unsigned int	arg;
 
 	arg = va_arg(p->args, unsigned int);
-	if (!(!arg && (p->flags & B_DOT_FLAG) && p->prec == 0))
+	if (!(!arg && (p->f & F_DOT) && p->p == 0))
 	{
-		if ((p->flags & B_HASHTAG_FLAG) && arg != 0)
+		if ((p->f & F_HASHTAG) && arg != 0)
 			bufferize_string("0X", f, p);
 		bufferize_integer(arg, g_base_16_upper, f, p);
 	}
@@ -70,13 +70,8 @@ void	handle_string(t_func f, t_printer *p)
 	arg = va_arg(p->args, char *);
 	if (arg)
 		bufferize_string(arg, f, p);
-	else if (p->prec >= 6 || !(p->flags & B_DOT_FLAG))
+	else if (p->p >= 6 || !(p->f & F_DOT))
 		bufferize_string("(null)", f, p);
-}
-
-void	handle_percent(t_func f, t_printer *p)
-{
-	f('%', p, false);
 }
 
 void	handle_illegal_argument(t_func f, t_printer *p)

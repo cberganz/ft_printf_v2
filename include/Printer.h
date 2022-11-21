@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 00:19:02 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/21 15:27:50 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 **		_n_*:	pointers to locations in the buffer. _n_current points to the
 **				next byte to be written.
 **		len:	total len printed since since ft_printf call. Incremented by
-**				the difference between _n_current and _n_start when the buffer
+**				the difference between _n_current and _n_s when the buffer
 **				is flushed.
 **		special_buffer:	a specific buffer for handling right alignment without
 **				having to calculate an argument len before writing it. In this
@@ -58,36 +58,36 @@ typedef struct s_printer
 {
 	const char		**format;
 	va_list			args;
-	uint8_t			flags;
-	uint32_t		width;
-	uint32_t		prec;
-	uint32_t		s_prec;
+	uint8_t			f;
+	uint32_t		w;
+	uint32_t		p;
+	uint32_t		save_p;
 	uint8_t			sign;
 	char			buffer[BUFFER_SIZE];
-	char			*_n_start;
-	char			*_n_current;
-	char			*_n_end;
-	char			*_n_save_current;
+	char			*_n_s;
+	char			*_n_c;
+	char			*_n_e;
+	char			*_n_save_c;
 	size_t			len;
 	char			special_buffer[4096];
-	char			*_s_start;
-	char			*_s_current;
-	char			*_s_end;
+	char			*_s_s;
+	char			*_s_c;
+	char			*_s_e;
 }	t_printer;
 
 /*
 **	brief:	binary flags mapping. Each flag is reprensented by a specific byte.
 */
 
-# define B_RESET			0b00000000
-# define B_MINUS_FLAG		0b00000001
-# define B_ZERO_FLAG		0b00000010
-# define B_DOT_FLAG			0b00000100
-# define B_HASHTAG_FLAG		0b00001000
-# define B_SPACE_FLAG		0b00010000
-# define B_PLUS_FLAG		0b00100000
-# define B_FLAG_SPECIFIER	0b00111111
-# define B_FORMAT_SPECIFIER	0b11000000
+# define F_RESET			0b00000000
+# define F_MINUS			0b00000001
+# define F_ZERO				0b00000010
+# define F_DOT				0b00000100
+# define F_HASHTAG			0b00001000
+# define F_SPACE			0b00010000
+# define F_PLUS				0b00100000
+# define F_FLAG_SPECIFIER	0b00111111
+# define F_FORMAT_SPECIFIER	0b11000000
 
 /*
 **	brief:	glabal constant containing data for base conversion.

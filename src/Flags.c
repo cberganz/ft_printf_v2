@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 00:58:23 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/21 15:28:27 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,23 @@ static const uint8_t	g_flags_map[128] = {
 
 char	*init_flags(const char **s, t_printer *p)
 {
-	if (g_flags_map[(int)*++(*s)] & B_FORMAT_SPECIFIER)
-		return (p->_n_current);
+	if (g_flags_map[(int)*++(*s)] & F_FORMAT_SPECIFIER)
+		return (p->_n_c);
 	if (g_flags_map[(int)**s])
 	{
-		p->flags |= g_flags_map[(int)**s];
-		if (g_flags_map[(int)**s] & B_DOT_FLAG)
+		p->f |= g_flags_map[(int)**s];
+		if (g_flags_map[(int)**s] & F_DOT)
 		{
 			(void)*(*s)++;
 			while (isdigit(**s))
-				p->prec = p->prec * 10 + *(*s)++ - '0';
+				p->p = p->p * 10 + *(*s)++ - '0';
 			(void)*(*s)--;
 		}
 	}
 	else if (isdigit(**s))
 	{
 		while (isdigit(**s))
-			p->width = p->width * 10 + *(*s)++ - '0';
+			p->w = p->w * 10 + *(*s)++ - '0';
 		(void)*(*s)--;
 	}
 	return (init_flags(s, p));
@@ -54,9 +54,9 @@ char	*init_flags(const char **s, t_printer *p)
 
 void	reset_flags(t_printer *p)
 {
-	p->flags = B_RESET;
+	p->f = F_RESET;
 	p->sign = 0;
-	p->width = 0;
-	p->prec = 0;
-	p->_n_save_current = NULL;
+	p->w = 0;
+	p->p = 0;
+	p->_n_save_c = NULL;
 }
