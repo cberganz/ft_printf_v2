@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 15:28:27 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:48:36 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,10 @@ char	*init_flags(const char **s, t_printer *p)
 	{
 		p->f |= g_flags_map[(int)**s];
 		if (g_flags_map[(int)**s] & F_DOT)
-		{
-			(void)*(*s)++;
-			while (isdigit(**s))
-				p->p = p->p * 10 + *(*s)++ - '0';
-			(void)*(*s)--;
-		}
+			read_integer(s, &p->p, true);
 	}
 	else if (isdigit(**s))
-	{
-		while (isdigit(**s))
-			p->w = p->w * 10 + *(*s)++ - '0';
-		(void)*(*s)--;
-	}
+		read_integer(s, &p->w, false);
 	return (init_flags(s, p));
 }
 

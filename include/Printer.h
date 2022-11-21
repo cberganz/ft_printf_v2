@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 15:27:50 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:47:49 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,6 @@ void				print_width(long long offset, t_printer *printer);
 void				print_prec(long long offset, t_printer *p);
 void				flags_construct(void);
 t_printer			*restore(void);
+void				read_integer(const char **s, uint32_t *ptr, bool offset);
 
 #endif

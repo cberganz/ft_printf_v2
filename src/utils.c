@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:21:17 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 15:36:37 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/21 21:25:11 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,7 @@ void	print_width(long long offset, t_printer *p)
 
 void	print_prec(long long offset, t_printer *p)
 {
-	if (offset > 0 && p->w > offset)
-		p->w -= offset;
-	else if (offset > 0 && offset >= p->w)
-		p->w = 0;
+	p->w -= (offset > 0) * (offset * (p->w > offset) + p->w * (p->w <= offset));
 	while (offset-- > 0)
 		bufferize_char('0', p, true);
 }
@@ -76,6 +73,15 @@ t_printer	*restore(void)
 	}
 	p.len = 0;
 	return (&p);
+}
+
+void	read_integer(const char **s, uint32_t *ptr, bool offset)
+{
+	if (offset)
+		(void)*(*s)++;
+	while (isdigit(**s))
+		*ptr = *ptr * 10 + *(*s)++ - '0';
+	(void)*(*s)--;
 }
 
 int	ft_abs(int v)
