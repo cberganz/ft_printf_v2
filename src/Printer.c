@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/20 19:29:09 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/21 01:42:08 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ void	bufferize_arg(t_printer *p)
 	p->_s_current = p->_s_start;
 	g_handler[g_jump[(int)*(*p->format)++]](&special_bufferize_char, p);
 	*p->_s_current = '\0';
-	if (p->width && !(p->flags & B_MINUS_FLAG))
-		print_width(p->width - (p->_s_current - p->_s_start) - (p->sign != 0), p);
-	if (p->sign)
+	if (p->sign && (p->flags & B_ZERO_FLAG))
 		bufferize_char(p->sign, p, false);
-	if (p->prec && g_jump[(int)*(*p->format - 1)] >= 5)
-		print_prec(p->prec - (p->_s_current - p->_s_start), p);
+	if (p->width && !(p->flags & B_MINUS_FLAG)) // retirer la prec quand c'est des int ?
+		print_width(p->width - (p->_s_current - p->_s_start) - (p->sign != 0), p);
+	if (p->sign && !(p->flags & B_ZERO_FLAG))
+		bufferize_char(p->sign, p, false);
+	if (g_jump[(int)*(*p->format - 1)] >= 5)
+		print_prec(p->prec - (p->_s_current - p->_s_start) - (p->_n_current - p->_n_save_current) + (p->sign != 0), p);
 	bufferize_string(p->_s_start, &bufferize_char, p);
 	if (p->width && p->flags & B_MINUS_FLAG)
 		print_width(p->width - (p->_s_current - p->_s_start) - (p->sign != 0), p);
