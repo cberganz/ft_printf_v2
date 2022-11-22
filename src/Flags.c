@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 20:48:36 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/22 00:51:28 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ void	reset_flags(t_printer *p)
 	p->sign = 0;
 	p->w = 0;
 	p->p = 0;
+	p->_s_c = p->_s_s;
+	*p->_s_c = '\0';
 	p->_n_save_c = NULL;
+	(void)*(*p->format)++;
 }

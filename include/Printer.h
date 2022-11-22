@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 20:47:49 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/22 00:52:46 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@
 **				_s_current and _s_start gives the len of the argument.
 */
 
-# define BUFFER_SIZE		1024
+# define BUFFER_SIZE				1024
+# define SPECIAL_BUFFER_SIZE		4096
 
 typedef struct s_printer
 {
@@ -69,7 +70,7 @@ typedef struct s_printer
 	char			*_n_e;
 	char			*_n_save_c;
 	size_t			len;
-	char			special_buffer[4096];
+	char			special_buffer[SPECIAL_BUFFER_SIZE];
 	char			*_s_s;
 	char			*_s_c;
 	char			*_s_e;
@@ -127,10 +128,11 @@ void				handle_decimal(t_func f, t_printer *printer);
 void				handle_unsigned(t_func f, t_printer *printer);
 void				handle_hexadecimal_lower(t_func f, t_printer *printer);
 void				handle_hexadecimal_upper(t_func f, t_printer *printer);
-void				print_width(long long offset, t_printer *printer);
 void				print_prec(long long offset, t_printer *p);
 void				flags_construct(void);
 t_printer			*restore(void);
 void				read_integer(const char **s, uint32_t *ptr, bool offset);
+void	print_pre_width(long long offset, t_printer *p);
+void	print_post_width(long long offset, t_printer *p);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 15:40:08 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/22 00:58:08 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,14 @@ void	bufferize_arg(t_printer *p)
 {
 	p->_n_save_c = init_flags(p->format, p);
 	p->save_p = p->p;
-	p->_s_c = p->_s_s;
 	g_handler[g_jump[(int)**p->format]](&special_bufferize_char, p);
-	*p->_s_c = '\0';
-	if (p->sign && (p->f & F_ZERO))
-		bufferize_char(p->sign, p, false);
-	if (p->w && !(p->f & F_MINUS))
-		print_width(p->w - (p->_s_c - p->_s_s) - (p->sign != 0), p);
-	if (p->sign && !(p->f & F_ZERO))
-		bufferize_char(p->sign, p, false);
+	print_pre_width(p->w - (p->_s_c - p->_s_s) - (p->sign != 0), p);
 	if (g_jump[(int)**p->format] >= 5)
-		print_prec(p->p - (p->_s_c - p->_s_s) - (p->_n_c - p->_n_save_c)
-			+ (p->sign != 0), p);
+		print_prec(p->p - (p->_s_c - p->_s_s) - (p->_n_c - p->_n_save_c), p);
 	bufferize_string(p->_s_s, &bufferize_char, p);
 	if (**p->format == 'c' && *(p->_s_c - 1) == '\0')
 		bufferize_char('\0', p, false);
-	if (p->w && p->f & F_MINUS)
-		print_width(p->w - (p->_s_c - p->_s_s) - (p->sign != 0), p);
-	(void)*(*p->format)++;
+	print_post_width(p->w - (p->_s_c - p->_s_s) - (p->sign != 0), p);
 	reset_flags(p);
 }
 
@@ -86,6 +76,7 @@ void	special_bufferize_char(char c, t_printer *p)
 			|| g_jump[(int)**p->format] >= 5 || p->save_p > 0))
 	{
 		*p->_s_c++ = c;
+		*p->_s_c = '\0';
 		if (g_jump[(int)**p->format] < 5 && p->f & F_DOT)
 			p->save_p--;
 	}
