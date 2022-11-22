@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 00:52:46 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/22 12:24:53 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ typedef void		(*t_handler)();
 
 char				*init_flags(const char **s, t_printer *printer);
 void				reset_flags(t_printer *printer);
-int					ft_abs(int v);
 void				flush(t_printer *printer);
 void				bufferize_char(char c, t_printer *printer, bool width);
 void				special_bufferize_char(char c, t_printer *printer);
