@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 12:36:36 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:19:08 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ char	*init_flags(const char **s, t_printer *p)
 void	reset_flags(t_printer *p)
 {
 	p->f = F_RESET;
-	p->sign = 0;
+	p->sign[0] = 0;
+	p->sign[1] = 0;
 	p->w = 0;
 	p->p = 0;
 	p->_s_c = p->_s_s;

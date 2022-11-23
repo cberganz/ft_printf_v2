@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 12:42:55 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:38:23 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_hexadecimal_lower(t_func f, t_printer *p)
 	if (!(!arg && (p->f & F_DOT) && p->p == 0))
 	{
 		if ((p->f & F_HASHTAG) && arg != 0)
-			bufferize_string("0x", f, p);
+			strcpy(p->sign, "0x");
 		bufferize_integer(arg, g_base_16, f, p);
 	}
 }
@@ -41,7 +41,7 @@ void	handle_hexadecimal_upper(t_func f, t_printer *p)
 	if (!(!arg && (p->f & F_DOT) && p->p == 0))
 	{
 		if ((p->f & F_HASHTAG) && arg != 0)
-			bufferize_string("0X", f, p);
+			strcpy(p->sign, "0X");
 		bufferize_integer(arg, g_base_16_upper, f, p);
 	}
 }

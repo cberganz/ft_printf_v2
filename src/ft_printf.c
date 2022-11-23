@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/21 15:28:29 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/22 15:02:49 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ const t_base			g_base_10 = {10, "0123456789"};
 const t_base			g_base_16 = {16, "0123456789abcdef"};
 const t_base			g_base_16_upper = {16, "0123456789ABCDEF"};
 
-static const t_handler	g_format_string_handler[3] = {
+static const t_func_handler	g_format_string_handler[3] = {
 	&bufferize_increment,
 	&bufferize_arg
 };

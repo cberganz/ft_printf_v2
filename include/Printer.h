@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 12:24:53 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:58:30 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_printer
 	uint32_t		w;
 	uint32_t		p;
 	uint32_t		save_p;
-	uint8_t			sign;
+	char			sign[3];
 	char			buffer[BUFFER_SIZE];
 	char			*_n_s;
 	char			*_n_c;
@@ -106,7 +106,12 @@ extern const t_base	g_base_16;
 extern const t_base	g_base_16_upper;
 
 typedef void		(*t_func)(char, t_printer *, bool);
-typedef void		(*t_handler)();
+typedef void		(*t_func_handler)();
+typedef struct		s_handler
+{
+	t_func_handler	f;
+	uint8_t			ignore;
+}	t_handler;
 
 char				*init_flags(const char **s, t_printer *printer);
 void				reset_flags(t_printer *printer);
