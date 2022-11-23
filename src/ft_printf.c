@@ -6,15 +6,15 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 15:02:49 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/23 15:15:02 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Printer.h"
 
-const t_base			g_base_10 = {10, "0123456789"};
-const t_base			g_base_16 = {16, "0123456789abcdef"};
-const t_base			g_base_16_upper = {16, "0123456789ABCDEF"};
+const t_base				g_base_10 = {10, "0123456789"};
+const t_base				g_base_16 = {16, "0123456789abcdef"};
+const t_base				g_base_16_upper = {16, "0123456789ABCDEF"};
 
 static const t_func_handler	g_format_string_handler[3] = {
 	&bufferize_increment,

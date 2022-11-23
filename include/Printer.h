@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 14:58:30 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/23 15:40:20 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,22 @@
 **	Attributes:
 **		format:	double pointer to the current computed char of the format str.
 **		args:	va_list containing the variadic arguments.
-**		flags:	uint8_t containing all 6 possible flags of the project (-0+# .).
-**				Each flag is represented by a byte defined below.
-**		width:	contains the user defined minimum width or 0 if unspecified.
-**		prec:	contains the user defined precision if the dot flag is present
-**				or 0 if unspecified.
+**		f:		(flags):uint8_t containing all 6 possible flags of the project
+**				(-0+# .). Each flag is represented by a byte defined below.
+**		w:		(width): contains the user defined minimum width or 0 if
+**				unspecified.
+**		p:		(precision): contains the user defined precision if the dot flag
+**				is present or 0 if unspecified.
 **		sign:	allows handling the difference between width and precision for
 **				numeric types : width does not take into account the + or - or
 **				blank character representing the sign.
 **		buffer:	contains characters to be printed for the next flush.
 **		_n_*:	pointers to locations in the buffer. _n_current points to the
-**				next byte to be written.
+**				next byte to be written. There are four *_n_ pointers :
+**					- _n_s : pointer to the beginning of the buffer ;
+**					- _n_c : pointer to the next character of the buffer ;
+**					- _n_save_c : save a position ;
+**					- _n_e : pointer to the end of the buffer.
 **		len:	total len printed since since ft_printf call. Incremented by
 **				the difference between _n_current and _n_s when the buffer
 **				is flushed.
@@ -50,6 +55,9 @@
 **		_s_*:	pointers to locations in the special buffer. _s_current points
 **				to the next byte to be written. The difference between
 **				_s_current and _s_start gives the len of the argument.
+**					- _s_s : pointer to the beginning of the buffer ;
+**					- _s_c : pointer to the next character of the buffer ;
+**					- _s_e : pointer to the end of the buffer.
 */
 
 # define BUFFER_SIZE				1024
@@ -58,6 +66,7 @@
 typedef struct s_printer
 {
 	const char		**format;
+	size_t			len;
 	va_list			args;
 	uint8_t			f;
 	uint32_t		w;
@@ -69,7 +78,6 @@ typedef struct s_printer
 	char			*_n_c;
 	char			*_n_e;
 	char			*_n_save_c;
-	size_t			len;
 	char			special_buffer[SPECIAL_BUFFER_SIZE];
 	char			*_s_s;
 	char			*_s_c;
@@ -107,7 +115,8 @@ extern const t_base	g_base_16_upper;
 
 typedef void		(*t_func)(char, t_printer *, bool);
 typedef void		(*t_func_handler)();
-typedef struct		s_handler
+
+typedef struct s_handler
 {
 	t_func_handler	f;
 	uint8_t			ignore;
@@ -136,7 +145,7 @@ void				print_prec(long long offset, t_printer *p);
 void				flags_construct(void);
 t_printer			*restore(void);
 void				read_integer(const char **s, uint32_t *ptr, bool offset);
-void	print_pre_width(long long offset, t_printer *p);
-void	print_post_width(long long offset, t_printer *p);
+void				print_pre_width(long long offset, t_printer *p);
+void				print_post_width(long long offset, t_printer *p);
 
 #endif

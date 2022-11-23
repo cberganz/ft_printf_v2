@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:21:17 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 14:29:59 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/23 15:52:07 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ void	print_pre_width(long long offset, t_printer *p)
 {
 	int	c;
 
+	offset += - (p->sign[0] != 0) - (p->sign[1] != 0);
 	c = 32 + ((p->f & F_ZERO) << 3);
-	if (p->f & F_DOT && offset - p->w + p->p + (p->sign[0] != 0) + (p->sign[1] != 0) <= 0)
-		c = 32;
-	if (p->f & F_DOT && p->f & F_ZERO && offset + (p->_s_c - p->_s_s) > p->p && p->p >= p->_s_c - p->_s_s)
+	if (p->f & F_DOT)
 	{
-		c = 32;
-		offset = offset - p->p + (p->_s_c - p->_s_s);
-		p->p += offset;
+		if (p->p <= (p->_s_c - p->_s_s))
+			c = 32;
+		if (p->f & F_ZERO && offset + (p->_s_c - p->_s_s) > p->p
+			&& p->p >= p->_s_c - p->_s_s)
+		{
+			c = 32;
+			offset = offset - p->p + (p->_s_c - p->_s_s);
+			p->p += offset;
+		}
 	}
 	if (*p->sign && c == '0')
 		bufferize_string(p->sign, &bufferize_char, p);
@@ -37,6 +42,7 @@ void	print_post_width(long long offset, t_printer *p)
 {
 	int	c;
 
+	offset += - (p->sign[0] != 0) - (p->sign[1] != 0);
 	if (!p->w || !(p->f & F_MINUS))
 		return ;
 	c = 16 * ((p->f & (F_ZERO | F_DOT)) == 6) * (p->p <= p->_s_c - p->_s_s);
