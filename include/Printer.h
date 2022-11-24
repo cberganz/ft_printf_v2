@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 15:40:20 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/24 01:13:47 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,36 @@
 # include <stdbool.h>
 
 /*
-**	Brief: Object containing all necessary datas and pointers for the current
-**		   call of ft_printf().
+**	@brief: The size of the buffer used to reduce i/o operations.
 **
-**	Attributes:
+**	BUFFER_SIZE: Fixing it to the standard default buffer size allows to make
+**				 the right compromise between optimizing i/o operations and
+**				 minimizing the memory used to store the buffer.
+**	SPECIAL_BUFFER_START_SIZE: The special buffer is dynamically allocated
+**				 according to the size of the string-converted variadic argument
+**				 it should store. Each time this buffer is full it will be
+**				 reallocated with a double size. Increasing this size reduces
+**				 the number of allocations and copies of memory but requires a
+**				 heavier initial allocation only for some edge cases. A size of
+**				 32 will be the best possible optimization to handle all the
+**				 numeric variables that our function can receive as well as
+**				 short strings (so it will handle most practical use cases
+**				 without having any reallocation). Here I have set it to 4096
+**				 (the virtual memory page size on my system) which is a good
+**				 choice for the purpose of getting my project corrected by peers
+**				 and moulinette. For more information about the special buffer
+**				 please get a look at the below commentary @attribute:special_
+**				 buffer.
+*/
+
+# define BUFFER_SIZE				1024
+# define SPECIAL_BUFFER_START_SIZE	4096
+
+/*
+**	@brief: Object containing all necessary datas and pointers for the current
+**			call of ft_printf().
+**
+**	@attributes:
 **		format:	double pointer to the current computed char of the format str.
 **		args:	va_list containing the variadic arguments.
 **		f:		(flags):uint8_t containing all 6 possible flags of the project
@@ -35,9 +61,10 @@
 **				unspecified.
 **		p:		(precision): contains the user defined precision if the dot flag
 **				is present or 0 if unspecified.
-**		sign:	allows handling the difference between width and precision for
-**				numeric types : width does not take into account the + or - or
-**				blank character representing the sign.
+**		sign:	stores the sign to be printed for a numerical argument so it can
+**				be written to the buffer at the good moment (ie. before width if
+**				the paddling char is '0'). This array can also store pointer and
+**				hexadecimal predicates "0x" and "0X" for the same reason.
 **		buffer:	contains characters to be printed for the next flush.
 **		_n_*:	pointers to locations in the buffer. _n_current points to the
 **				next byte to be written. There are four *_n_ pointers :
@@ -51,7 +78,9 @@
 **		special_buffer:	a specific buffer for handling right alignment without
 **				having to calculate an argument len before writing it. In this
 **				specific case, the argument will be first written to this buffer
-**				and its len will be known by pointer difference.
+**				and its len will be known by pointer difference. You can make
+**				some optimizations by changing its starting size (see above
+**				commentary about SPECIAL_BUFFER_START_SIZE for more information)
 **		_s_*:	pointers to locations in the special buffer. _s_current points
 **				to the next byte to be written. The difference between
 **				_s_current and _s_start gives the len of the argument.
@@ -59,9 +88,6 @@
 **					- _s_c : pointer to the next character of the buffer ;
 **					- _s_e : pointer to the end of the buffer.
 */
-
-# define BUFFER_SIZE				1024
-# define SPECIAL_BUFFER_SIZE		4096
 
 typedef struct s_printer
 {
@@ -78,7 +104,8 @@ typedef struct s_printer
 	char			*_n_c;
 	char			*_n_e;
 	char			*_n_save_c;
-	char			special_buffer[SPECIAL_BUFFER_SIZE];
+	char			*special_buffer;
+	uint32_t		_s_size;
 	char			*_s_s;
 	char			*_s_c;
 	char			*_s_e;
@@ -147,5 +174,6 @@ t_printer			*restore(void);
 void				read_integer(const char **s, uint32_t *ptr, bool offset);
 void				print_pre_width(long long offset, t_printer *p);
 void				print_post_width(long long offset, t_printer *p);
+void				realloc_special_buffer(t_printer *p);
 
 #endif

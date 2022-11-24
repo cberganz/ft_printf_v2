@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 15:15:48 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/23 23:51:28 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,18 @@ void	handle_illegal_argument(t_func f, t_printer *p)
 		|| **p->format == 'E' || **p->format == 'g' || **p->format == 'G'
 		|| **p->format == 'a' || **p->format == 'A')
 		(void)va_arg(p->args, double);
-	else if (**p->format == 'o' || **p->format == 'l')
+	else if (**p->format == 'o')
 		(void)va_arg(p->args, int);
 	else if (**p->format == 'n')
 		(void)va_arg(p->args, int *);
 	else
 	{
 		errno = EINVAL;
-		exit(errno);
+		(*p->format) += strlen(*p->format);
+		p->f = 0;
+		p->w = 0;
+		p->p = 0;
+		return ;
 	}
 	while (**p->format != '%')
 		(void)*(*p->format)--;

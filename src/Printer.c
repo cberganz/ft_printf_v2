@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 15:46:22 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/23 23:51:41 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	bufferize_increment(t_printer *p)
 
 void	special_bufferize_char(char c, t_printer *p)
 {
-	if (p->_s_c != p->_s_e && (!(p->f & F_DOT)
-			|| g_jump[(int)**p->format] >= 5 || p->save_p > 0))
+	if (p->_s_c == p->_s_e)
+		realloc_special_buffer(p);
+	if ((!(p->f & F_DOT) || g_jump[(int)**p->format] >= 5 || p->save_p > 0))
 	{
 		*p->_s_c++ = c;
 		*p->_s_c = '\0';

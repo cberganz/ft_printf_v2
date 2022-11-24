@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 15:15:02 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/24 00:03:16 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static const t_func_handler	g_format_string_handler[3] = {
 	&bufferize_arg
 };
 
-int	ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+int		ft_printf(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+void	destructor(void) __attribute__ ((destructor));
 
 int	ft_printf(const char *s, ...)
 {
@@ -35,4 +36,9 @@ int	ft_printf(const char *s, ...)
 	va_end(p->args);
 	flush(p);
 	return (p->len);
+}
+
+void destructor(void)
+{
+	free(restore()->special_buffer);
 }

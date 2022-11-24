@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 14:19:08 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/23 23:52:35 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,24 @@ void	reset_flags(t_printer *p)
 	p->sign[1] = 0;
 	p->w = 0;
 	p->p = 0;
-	p->_s_c = p->_s_s;
-	*p->_s_c = '\0';
 	p->_n_save_c = NULL;
-	(void)*(*p->format)++;
+	if (p->_s_size != SPECIAL_BUFFER_START_SIZE)
+	{
+		free(p->special_buffer);
+		p->_s_size = SPECIAL_BUFFER_START_SIZE;
+		p->special_buffer = (char *)malloc(p->_s_size);
+		p->_s_s = &p->special_buffer[0];
+		p->_s_c = &p->special_buffer[0];
+		p->_s_e = &p->special_buffer[p->_s_size - 1];
+		*p->_s_c = '\0';
+	}
+	else
+	{
+		p->_s_c = p->_s_s;
+		*p->_s_c = '\0';
+	}
+	if (**p->format)
+		(void)*(*p->format)++;
 }
 
 t_printer	*restore(void)
@@ -62,13 +76,31 @@ t_printer	*restore(void)
 
 	if (!p._n_s)
 	{
+		p._s_size = SPECIAL_BUFFER_START_SIZE;
+		p.special_buffer = (char *)malloc(SPECIAL_BUFFER_START_SIZE);
 		p._n_s = &*p.buffer;
 		p._s_s = &*p.special_buffer;
 		p._n_c = p._n_s;
 		p._s_c = p._s_s;
+		*p._s_c = '\0';
 		p._n_e = &p.buffer[BUFFER_SIZE - 1];
-		p._s_e = &p.special_buffer[SPECIAL_BUFFER_SIZE - 1];
+		p._s_e = &p.special_buffer[SPECIAL_BUFFER_START_SIZE - 1];
 	}
 	p.len = 0;
 	return (&p);
+}
+
+void	realloc_special_buffer(t_printer *p)
+{
+	char	*save;
+
+	save = p->special_buffer;
+	p->_s_size *= 2;
+	p->special_buffer = (char *)malloc(p->_s_size);
+	strcpy(p->special_buffer, save);
+	p->_s_c = &p->special_buffer[p->_s_c - p->_s_s];
+	p->_s_s = &p->special_buffer[0];
+	p->_s_e = &p->special_buffer[p->_s_size - 1];
+	*p->_s_c = '\0';
+	free(save);
 }
