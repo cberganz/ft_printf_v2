@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:18:19 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 23:51:28 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:59:46 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,10 @@ void	handle_string(t_func f, t_printer *p)
 void	handle_illegal_argument(t_func f, t_printer *p)
 {
 	(void)f;
-	if (**p->format == 'f' || **p->format == 'F' || **p->format == 'e'
-		|| **p->format == 'E' || **p->format == 'g' || **p->format == 'G'
-		|| **p->format == 'a' || **p->format == 'A')
-		(void)va_arg(p->args, double);
-	else if (**p->format == 'o')
-		(void)va_arg(p->args, int);
-	else if (**p->format == 'n')
-		(void)va_arg(p->args, int *);
-	else
-	{
-		errno = EINVAL;
-		(*p->format) += strlen(*p->format);
-		p->f = 0;
-		p->w = 0;
-		p->p = 0;
-		return ;
-	}
-	while (**p->format != '%')
-		(void)*(*p->format)--;
-	bufferize_char('%', p, true);
 	p->f = 0;
 	p->w = 0;
 	p->p = 0;
+	while (**p->format != '%')
+		(void)*(*p->format)--;
+	bufferize_char('%', p, true);
 }
