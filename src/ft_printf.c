@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/24 00:03:16 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/25 23:08:39 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_printf(const char *s, ...)
 	return (p->len);
 }
 
-void destructor(void)
+void	destructor(void)
 {
 	free(restore()->special_buffer);
 }
