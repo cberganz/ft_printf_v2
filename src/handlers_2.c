@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/22 15:23:18 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/26 04:05:07 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ void	handle_pointer(t_func f, t_printer *p)
 		bufferize_integer(arg, g_base_16, f, p);
 	}
 	else
+	{
+		p->f &= ~F_DOT;
 		bufferize_string("(nil)", f, p);
+	}
 }
 
 void	handle_unsigned(t_func f, t_printer *p)
@@ -71,4 +74,6 @@ void	bufferize_integer(unsigned long n, t_base base, t_func f, \
 void	handle_percent(t_func f, t_printer *p)
 {
 	f('%', p, false);
+	p->w = 0;
+	p->p = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/25 15:37:40 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/26 03:31:35 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ void	realloc_special_buffer(t_printer *p)
 	p->_s_size *= 2;
 	p->special_buffer = (char *)malloc(p->_s_size);
 	strcpy(p->special_buffer, save);
-	p->_s_s = &p->special_buffer[0];
 	p->_s_c = &p->special_buffer[p->_s_c - p->_s_s];
+	p->_s_s = &p->special_buffer[0];
 	p->_s_e = &p->special_buffer[p->_s_size - 1];
 	*p->_s_c = '\0';
 	free(save);

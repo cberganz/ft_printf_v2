@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/23 23:51:41 by charles          ###   ########.fr       */
+/*   Updated: 2022/11/26 05:01:25 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static const t_handler	g_handler[10] = {
 {&handle_percent, F_FLAG_SPECIFIER},
 {&handle_char, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS},
 {&handle_string, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS},
-{&handle_pointer, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS},
+{&handle_pointer, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS | F_DOT},
 {&handle_decimal, F_HASHTAG},
 {&handle_decimal, F_HASHTAG},
 {&handle_unsigned, F_HASHTAG | F_SPACE | F_PLUS},
@@ -55,7 +55,7 @@ void	bufferize_arg(t_printer *p)
 	p->save_p = p->p;
 	g_handler[g_jump[(int)**p->format]].f(&special_bufferize_char, p);
 	print_pre_width(p->w - (p->_s_c - p->_s_s), p);
-	if (g_jump[(int)**p->format] >= 5)
+	if (g_jump[(int)**p->format] >= 4)
 		print_prec(p->p - (p->_s_c - p->_s_s) - (p->_n_c - p->_n_save_c), p);
 	bufferize_string(p->_s_s, &bufferize_char, p);
 	if (**p->format == 'c' && *(p->_s_c - 1) == '\0')
