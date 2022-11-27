@@ -6,18 +6,18 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/26 04:05:07 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/27 09:35:04 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Printer.h"
 
-static const char	g_char_table[49] = {
+static const char	g_char_table[50] = {
 	0,		'-',	0,		0,		0,		0,		0,		0,		0,		0,
 	0,		0,		0,		0,		0,		0,		' ',	'-',	0,		0,
 	0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 	0,		0,		'+',	'-',	0,		0,		0,		0,		0,		0,
-	0,		0,		0,		0,		0,		0,		0,		'+',	'-'
+	0,		0,		0,		0,		0,		0,		0,		0,		'+',	'-'
 };
 
 void	handle_decimal(t_func f, t_printer	*p)

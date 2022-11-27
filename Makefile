@@ -6,11 +6,9 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2022/11/23 16:00:19 by cberganz         ###   ########.fr        #
+#    Updated: 2022/11/27 02:54:13 by cberganz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-NAME		= test
 
 LIB_NAME	= libftprintf.a
 
@@ -64,7 +62,6 @@ clean:
 
 fclean: clean
 	rm -f ${LIB_NAME}
-	rm -f ${NAME}
 
 re: fclean all
 
