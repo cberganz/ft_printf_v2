@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/26 05:01:25 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/28 00:16:45 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static const uint8_t	g_jump[128] = {
 static const t_handler	g_handler[10] = {
 {&handle_illegal_argument, F_FLAG_SPECIFIER},
 {&handle_percent, F_FLAG_SPECIFIER},
-{&handle_char, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS},
+{&handle_char, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS | F_DOT},
 {&handle_string, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS},
 {&handle_pointer, F_ZERO | F_HASHTAG | F_SPACE | F_PLUS | F_DOT},
 {&handle_decimal, F_HASHTAG},
@@ -86,7 +86,7 @@ void	special_bufferize_char(char c, t_printer *p)
 
 void	bufferize_char(char c, t_printer *p, bool width)
 {
-	if (!(p->f & F_DOT) || p->p > 0 || g_jump[(int)**p->format] >= 5 || width)
+	if (!(p->f & F_DOT) || p->p > 0 || g_jump[(int)**p->format] >= 4 || width)
 	{
 		*p->_n_c++ = c;
 		if (c == '\n' || p->_n_c == p->_n_e)

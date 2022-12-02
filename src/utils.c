@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:21:17 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/26 05:02:53 by cberganz         ###   ########.fr       */
+/*   Updated: 2022/11/27 13:47:00 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	print_pre_width(long long offset, t_printer *p)
 	{
 		if (p->p <= (p->_s_c - p->_s_s))
 			c = 32;
-		if (**p->format != 's' && offset + (p->_s_c - p->_s_s) > p->p
+		if (p->p > offset + (p->_s_c - p->_s_s) && **p->format != 's')
+			offset = 0;
+		else if (**p->format != 's' && offset + (p->_s_c - p->_s_s) >= p->p
 			&& p->p >= p->_s_c - p->_s_s)
 		{
 			c = 32;
