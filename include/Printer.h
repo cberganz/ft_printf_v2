@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/25 23:09:42 by cberganz         ###   ########.fr       */
+/*   Updated: 2023/01/04 06:31:51 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_printer
 	char			*_s_s;
 	char			*_s_c;
 	char			*_s_e;
+	bool			malloc_error;
 }	t_printer;
 
 /*

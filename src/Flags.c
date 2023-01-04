@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 22:32:46 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/26 03:31:35 by cberganz         ###   ########.fr       */
+/*   Updated: 2023/01/04 06:31:52 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ void	reset_flags(t_printer *p)
 		free(p->special_buffer);
 		p->_s_size = SPECIAL_BUFFER_START_SIZE;
 		p->special_buffer = (char *)malloc(p->_s_size);
+		if (!p->special_buffer)
+		{
+			p->malloc_error = true;
+			return ;
+		}
 		p->_s_s = &p->special_buffer[0];
 		p->_s_e = &p->special_buffer[p->_s_size - 1];
 	}
@@ -73,11 +78,14 @@ t_printer	*restore(void)
 	{
 		p._s_size = SPECIAL_BUFFER_START_SIZE;
 		p.special_buffer = (char *)malloc(SPECIAL_BUFFER_START_SIZE);
+		if (!p.special_buffer)
+			return (NULL);
 		p._n_s = &*p.buffer;
 		p._s_s = &*p.special_buffer;
 		p._n_c = p._n_s;
 		p._s_c = p._s_s;
 		*p._s_c = '\0';
+		p.malloc_error = false;
 		p._n_e = &p.buffer[BUFFER_SIZE - 1];
 		p._s_e = &p.special_buffer[SPECIAL_BUFFER_START_SIZE - 1];
 	}
@@ -92,6 +100,11 @@ void	realloc_special_buffer(t_printer *p)
 	save = p->special_buffer;
 	p->_s_size *= 2;
 	p->special_buffer = (char *)malloc(p->_s_size);
+	if (!p->special_buffer)
+	{
+		p->malloc_error = true;
+		return ;
+	}
 	strcpy(p->special_buffer, save);
 	p->_s_c = &p->special_buffer[p->_s_c - p->_s_s];
 	p->_s_s = &p->special_buffer[0];

@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 23:08:07 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/25 23:08:39 by cberganz         ###   ########.fr       */
+/*   Updated: 2023/01/04 06:57:06 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,16 @@ int	ft_printf(const char *s, ...)
 	t_printer	*p;
 
 	p = restore();
+	if (!p || !s)
+		return (-1);
 	va_start(p->args, s);
 	p->format = &s;
 	while (*s)
+	{
 		g_format_string_handler[*s == '%'](p);
+		if (p->malloc_error)
+			return (-1);
+	}
 	va_end(p->args);
 	flush(p);
 	return (p->len);

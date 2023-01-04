@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:44:54 by cberganz          #+#    #+#             */
-/*   Updated: 2022/12/20 22:47:51 by charles          ###   ########.fr       */
+/*   Updated: 2023/01/04 06:36:50 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	bufferize_arg(t_printer *p)
 	p->f &= ~g_handler[g_jump[(int)**p->format]].ignore;
 	p->save_p = p->p;
 	g_handler[g_jump[(int)**p->format]].f(&special_bufferize_char, p);
+	if (p->malloc_error)
+		return ;
 	print_pre_width(p->w - (p->_s_c - p->_s_s), p);
 	if (g_jump[(int)**p->format] >= 4)
 		print_prec(p->p - (p->_s_c - p->_s_s) - (p->_n_c - p->_n_save_c), p);
@@ -74,7 +76,11 @@ void	bufferize_increment(t_printer *p)
 void	special_bufferize_char(char c, t_printer *p)
 {
 	if (p->_s_c == p->_s_e)
+	{
 		realloc_special_buffer(p);
+		if (p->malloc_error)
+			return ;
+	}
 	if ((!(p->f & F_DOT) || g_jump[(int)**p->format] >= 5 || p->save_p > 0))
 	{
 		*p->_s_c++ = c;

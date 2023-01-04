@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2022/11/27 23:59:31 by charles          ###   ########.fr       */
+/*   Updated: 2023/01/04 06:57:54 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	handle_unsigned(t_func f, t_printer *p)
 void	bufferize_integer(unsigned long n, t_base base, t_func f, \
 							t_printer *p)
 {
+	if (p->malloc_error)
+		return ;
 	if (n >= (unsigned long)base.size)
 	{
 		bufferize_integer(n / base.size, base, f, p);
