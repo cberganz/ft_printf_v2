@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:20:08 by cberganz          #+#    #+#             */
-/*   Updated: 2023/01/04 06:57:54 by cberganz         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:07:18 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_decimal(t_func f, t_printer	*p)
 	if (*p->sign)
 		*p->sign = g_char_table[(int)*p->sign];
 	if (!(!arg && (p->f & F_DOT) && p->p == 0))
-		bufferize_integer((unsigned int)abs(arg), g_base_10, f, p);
+		bufferize_integer((unsigned int)ft_abs(arg), g_base_10, f, p);
 }
 
 void	handle_pointer(t_func f, t_printer *p)
@@ -40,7 +40,7 @@ void	handle_pointer(t_func f, t_printer *p)
 	arg = va_arg(p->args, unsigned long);
 	if (arg)
 	{
-		strcpy(p->sign, "0x");
+		ft_strcpy(p->sign, "0x");
 		bufferize_integer(arg, g_base_16, f, p);
 	}
 	else

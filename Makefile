@@ -6,13 +6,13 @@
 #    By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:42:39 by cberganz          #+#    #+#              #
-#    Updated: 2023/01/03 23:51:49 by charles          ###   ########.fr        #
+#    Updated: 2023/01/07 15:15:46 by cberganz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIB_NAME	= libftprintf.a
 
-CC			= gcc
+CC			= cc
 
 INCLUDE		= include/
 
@@ -23,6 +23,7 @@ SRC_NAME	= Flags.c			\
 			  ft_printf.c		\
 			  handlers_1.c		\
 			  handlers_2.c		\
+			  lib.c				\
 			  utils.c
 
 TESTER_NAME	= unit_test/test.c
@@ -50,7 +51,7 @@ ${OBJ_DIRS}:
 ${OBJ}: | ${OBJ_DIRS}
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.c
-	${CC} ${FLAGS} -I${INCLUDE} -c $< -o $@
+	${CC} ${FLAGS} -I${INCLUDE} -fPIE -c $< -o $@
 
 benchmark: all
 	gcc benchmark/benchmark.c -I./include/ -L. -lftprintf -o newVersion

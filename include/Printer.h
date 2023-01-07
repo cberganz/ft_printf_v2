@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:06:30 by cberganz          #+#    #+#             */
-/*   Updated: 2023/01/04 06:31:51 by cberganz         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:12:33 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,8 @@ void				read_integer(const char **s, uint32_t *ptr, bool offset);
 void				print_pre_width(long long offset, t_printer *p);
 void				print_post_width(long long offset, t_printer *p);
 void				realloc_special_buffer(t_printer *p);
+int					ft_isdigit(int c);
+char				*ft_strcpy(char *dest, const char *src);
+int					ft_abs(int i);
 
 #endif

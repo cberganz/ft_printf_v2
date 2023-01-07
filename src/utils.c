@@ -6,7 +6,7 @@
 /*   By: cberganz <cberganz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:21:17 by cberganz          #+#    #+#             */
-/*   Updated: 2022/12/20 22:34:08 by charles          ###   ########.fr       */
+/*   Updated: 2023/01/07 15:09:02 by cberganz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	read_integer(const char **s, uint32_t *ptr, bool offset)
 {
 	if (offset)
 		(void)*(*s)++;
-	while (isdigit(**s))
+	while (ft_isdigit(**s))
 		*ptr = *ptr * 10 + *(*s)++ - '0';
 	(void)*(*s)--;
 }
