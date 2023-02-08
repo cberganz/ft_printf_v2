@@ -1,13 +1,6 @@
+# ft_printf
 <div class="tg-wrap">
-<img align="left" width=250px src="https://i.ibb.co/R00M5HK/printf.png" alt="printf" border="0">
-<br><br>
  <table>
- <thead>
-   <tr>
-     <th>Project name</th>
-     <th>ft_printf</th>
-   </tr>
- </thead>
  <tbody>
    <tr>
      <td>Description</td>
@@ -19,12 +12,11 @@
    </tr>
    <tr>
       <td>Allowed libraries</td>
-      <td>malloc(), free(), write(), va_start(), va_arg(), va_copy(), va_end()</td>
+      <td align="center">malloc(), free(), write(), va_start(), va_arg(), va_copy(), va_end()</td>
    </tr>
  </tbody>
  </table>
 </div>
-<br>
 
 ## Usage
 #### Generate the library
