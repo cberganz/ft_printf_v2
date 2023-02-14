@@ -1,22 +1,11 @@
 # ft_printf
-<div class="tg-wrap">
- <table>
- <tbody>
-   <tr>
-     <td>Description</td>
-     <td align="center">Custom version of the libc printf function</td>
-   </tr>
-   <tr>
-     <td>Technologies</td>
-     <td align="center"><a href="#"><img alt="C" src="https://custom-icon-badges.demolab.com/badge/C-03599C.svg?logo=c-in-hexagon&logoColor=white&style=for-the-badge"></a></td>
-   </tr>
-   <tr>
-      <td>Allowed libraries</td>
-      <td align="center">malloc(), free(), write(), va_start(), va_arg(), va_copy(), va_end()</td>
-   </tr>
- </tbody>
- </table>
-</div>
+
+| Project Name | ft_printf |
+| :-: | :-: |
+| Description | Custom version of the libc printf function |
+| Technologies | <a href="#"><img alt="C" src="https://custom-icon-badges.demolab.com/badge/C-03599C.svg?logo=c-in-hexagon&logoColor=white&style=for-the-badge"></a> |
+| External libraries | malloc(), free(), write(), va_start(), va_arg(), va_copy(), va_end() |
+| Final grade | 125/125 |
 
 ## Usage
 #### Generate the library
